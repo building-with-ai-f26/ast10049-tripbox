@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tripbox · Building with AI (Fall 2026)</title>
 
-  <!-- PostHog installation is planned for Build 2. -->
-
   <style>
     :root {
       --bg: #fafafa;
@@ -19,113 +17,13 @@
       --tag-text: #1e40af;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "DM Sans",
-        "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
-
-    .container {
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 48px 24px 80px;
-    }
-
-    header {
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 28px;
-      margin-bottom: 32px;
-    }
-
-    .eyebrow {
-      display: inline-block;
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      background: var(--tag-bg);
-      color: var(--tag-text);
-      padding: 4px 10px;
-      border-radius: 999px;
-      margin-bottom: 12px;
-    }
-
-    h1 {
-      font-size: 36px;
-      line-height: 1.15;
-      margin: 0 0 12px;
-      letter-spacing: -0.02em;
-    }
-
-    .tagline {
-      font-size: 19px;
-      color: var(--muted);
-      margin: 0 0 20px;
-    }
-
-    .cta-row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 10px 18px;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 15px;
-      text-decoration: none;
-      background: var(--accent);
-      color: #fff;
-    }
-
-    .btn-secondary {
-      background: var(--card);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    section {
-
-[Image #1] HERE IS A SCREENSHOT
-
-I’ll use this as the prototype’s welcome/import-screen screenshot and label it that way. I’ll add it to the page and give you the shorter full HTML to copy, plus the image-upload step for GitHub.
-• Ran python3 - <<'PY' …
-  └ Copied supplied screenshot unchanged and embedded it in docs/index.html.
-Your screenshot is now included. On GitHub, upload it inside docs/images/ with the filename tripbox-prototype.png. Then replace docs/index.html with this shorter version.
-
-The $5.60 is labeled as an estimate from your subscription, not a measured token charge.
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tripbox · Building with AI (Fall 2026)</title>
-
-  <style>
-    :root {
-      --bg: #fafafa;
-      --card: #ffffff;
-      --text: #111827;
-      --muted: #4b5563;
-      --border: #e5e7eb;
-      --accent: #1d63dc;
-      --tag-bg: #eff6ff;
-      --tag-text: #1e40af;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "DM Sans", "Segoe UI", Roboto, sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
@@ -211,12 +109,15 @@ The $5.60 is labeled as an estimate from your subscription, not a measured token
       margin: 18px 0 6px;
     }
 
-    p, ul {
+    p,
+    ul {
       margin: 0 0 12px;
       color: #1f2937;
     }
 
-    li { margin-bottom: 8px; }
+    li {
+      margin-bottom: 8px;
+    }
 
     .grid-2 {
       display: grid;
@@ -241,7 +142,7 @@ The $5.60 is labeled as an estimate from your subscription, not a measured token
     .stat-value {
       font-size: 20px;
       font-weight: 700;
-      margin: 4px 0 8px;
+      margin-top: 4px;
     }
 
     .log-entry {
@@ -261,7 +162,9 @@ The $5.60 is labeled as an estimate from your subscription, not a measured token
       color: var(--muted);
     }
 
-    figure { margin: 16px 0; }
+    figure {
+      margin: 20px 0;
+    }
 
     figure img {
       display: block;
@@ -271,18 +174,41 @@ The $5.60 is labeled as an estimate from your subscription, not a measured token
       border-radius: 12px;
     }
 
-    figcaption { margin-top: 8px; }
+    figcaption {
+      margin-top: 8px;
+    }
+
+    @media (max-width: 540px) {
+      .container {
+        padding: 28px 16px 48px;
+      }
+
+      section {
+        padding: 20px;
+      }
+
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 
 <body>
   <div class="container">
+
+    <!-- PRODUCT PITCH -->
     <header>
-      <span class="eyebrow">NYU Stern · Building with AI · Fall 2026</span>
+      <span class="eyebrow">
+        NYU Stern · Building with AI · Fall 2026
+      </span>
+
       <h1>Tripbox</h1>
+
       <p class="tagline">
         Your trip, your taste, your favorite memories—sorted for sharing and keeping.
       </p>
+
       <p>
         Hundreds of trip photos, but nothing posted or printed? Tripbox helps
         turn camera-roll chaos into favorites for Instagram posts, Stories,
@@ -298,43 +224,55 @@ The $5.60 is labeled as an estimate from your subscription, not a measured token
       </div>
     </header>
 
+    <!-- PROTOTYPE SCREENSHOTS -->
     <section id="live-demo">
       <h2>Product Showcase (Prototype / Live App / 2-Min Video)</h2>
 
-      <p><strong>Current Status:</strong> Build 1: local browser prototype.</p>
+      <p>
+        <strong>Current Status:</strong>
+        Build 1: local browser prototype.
+      </p>
 
       <p>
-        <strong>Demo:</strong> Import photos → add style examples → review
-        suggested picks and similar shots → create post, Story, book-page,
-        and frame drafts.
+        <strong>Demo:</strong>
+        Import photos → add style examples → review suggested picks and
+        similar shots → create post, Story, book-page, and frame drafts.
       </p>
 
       <figure>
         <img
           src="images/tripbox-prototype.png"
-          alt="Tripbox welcome screen with a playful purple title, memory navigation, collection name field, and local photo picker."
+          alt="Tripbox welcome screen showing the purple Tripbox title, memory navigation, trip name field, and local photo picker."
         />
         <figcaption class="meta">
-          Build 1 screenshot: welcome screen and photo import.
-          No collection has been loaded in this view.
+          Build 1: welcome screen and photo import, before a collection is loaded.
+        </figcaption>
+      </figure>
+
+      <figure>
+        <img
+          src="images/tripbox-preferences.png"
+          alt="Tripbox preferences screen showing Instagram account type, example photo selection, color mood, and quantity options for posts, Stories, photo books, and frames."
+          loading="lazy"
+        />
+        <figcaption class="meta">
+          Build 1: style-example inputs and output options, before photos or
+          examples are added.
         </figcaption>
       </figure>
 
       <p class="meta">
         The prototype opens locally through
-        <code>prototype/index.html</code>. A public app and video are planned
-        for Build 5.
-      </p>
-
-      <p class="meta">
-        Current recommendations use local visual matching, not trained AI.
-        Photos stay on the device, originals remain unchanged, and working
-        selections disappear on refresh.
+        <code>prototype/index.html</code>. Current recommendations use local
+        visual matching, not trained AI. Photos stay on the device, originals
+        remain unchanged, and working selections disappear on refresh.
       </p>
     </section>
 
+    <!-- LIVING PRD -->
     <section id="prd">
       <h2>Living PRD (Product Requirements Document)</h2>
+
       <p class="meta">
         Updated every week as I test with real users and learn what works.
       </p>
@@ -342,27 +280,29 @@ The $5.60 is labeled as an estimate from your subscription, not a measured token
       <h3>1. Target User &amp; The Job to Be Done</h3>
 
       <p>
-        <strong>Who is this for?</strong> I’m my first target user: an NYU
-        student who takes hundreds of photos on trips and at social events.
-        I care about my personal style, which pictures I like of myself,
-        and which memories deserve more than a place in my camera roll.
-        I can test with my own photos, then recruit friends and classmates;
-        their needs have not yet been validated.
+        <strong>Who is this for?</strong>
+        I’m my first target user: an NYU student who takes hundreds of photos
+        on trips and at social events. I care about my personal style, which
+        pictures I like of myself, and which memories deserve more than a
+        place in my camera roll. I can test with my own photos, then recruit
+        friends and classmates; their needs have not yet been validated.
       </p>
 
       <p>
-        <strong>The painful “Before” workflow:</strong> I scroll through
-        similar shots repeatedly, make separate choices for Instagram and
-        keepsakes, and lose track of favorites across albums and screenshots.
-        Posting gets delayed, and photo books and prints never happen.
+        <strong>The painful “Before” workflow:</strong>
+        I scroll through similar shots repeatedly, make separate choices for
+        Instagram and keepsakes, and lose track of favorites across albums
+        and screenshots. Posting gets delayed, and photo books and prints
+        never happen.
       </p>
 
       <p>
-        <strong>The “After” workflow:</strong> I add a trip, supply examples
-        of my taste, and choose what I want to make. Tripbox suggests picks
-        by purpose and groups similar shots. I review and replace selections,
-        then arrange drafts for sharing and keeping. Personalized AI and
-        direct Instagram style learning remain the long-term goal.
+        <strong>The “After” workflow:</strong>
+        I add a trip, supply examples of my taste, and choose what I want to
+        make. Tripbox suggests picks by purpose and groups similar shots.
+        I review and replace selections, then arrange drafts for sharing and
+        keeping. Personalized AI and direct Instagram style learning remain
+        the long-term goal.
       </p>
 
       <h3>2. Scope &amp; Explicit Non-Goals</h3>
@@ -370,56 +310,63 @@ The $5.60 is labeled as an estimate from your subscription, not a measured token
       <ul>
         <li>
           <strong>In Scope (Core Workflow):</strong>
-          Add trip photos → provide style examples and preferences →
-          review suggested picks and duplicates → revise selections →
-          create output drafts.
+          Add trip photos → provide style examples and preferences → review
+          suggested picks and duplicates → revise selections → create
+          output drafts.
         </li>
+
         <li>
-          <strong>Output options:</strong> Choose the number of posts and
-          up to 20 photos per post, Story photos, book pages and photos per
-          page, and frame quantity, size, orientation, and mat. A photo can
-          appear in multiple groups.
+          <strong>Output options:</strong>
+          Choose the number of posts and up to 20 photos per post, Story
+          photos, book pages and photos per page, and frame quantity, size,
+          orientation, and mat. A photo can appear in multiple groups.
         </li>
+
         <li>
-          <strong>Out of Scope #1:</strong> Photo editing: no retouching,
-          face or body changes, filters, generated replacements, or edits
-          to originals.
+          <strong>Out of Scope #1:</strong>
+          Photo editing: no retouching, face or body changes, filters,
+          generated replacements, or edits to originals.
         </li>
+
         <li>
-          <strong>Out of Scope #2:</strong> Automatic Instagram publishing
-          or scheduling.
+          <strong>Out of Scope #2:</strong>
+          Automatic Instagram publishing or scheduling.
         </li>
+
         <li>
-          <strong>Out of Scope #3:</strong> Print orders, frame purchases,
-          or purchasing finished photo books.
+          <strong>Out of Scope #3:</strong>
+          Print orders, frame purchases, or purchasing finished photo books.
         </li>
       </ul>
 
       <p>
-        <strong>Build 1 limits:</strong> No overall import or favorites cap;
-        only each carousel is limited to 20 photos. A simulated
-        240-photo-record check passed, but performance with 200+ real phone
-        photos is unmeasured. Personal, Creator, and Business users can
-        supply examples manually; no live Instagram connection is
-        configured. Drafts can be reordered and saved as a planning file,
-        but sessions and finished print-ready books are not saved.
+        <strong>Build 1 limits:</strong>
+        No overall import or favorites cap; only each carousel is limited to
+        20 photos. A simulated 240-photo-record check passed, but performance
+        with 200+ real phone photos is unmeasured. Personal, Creator, and
+        Business users can supply examples manually; no live Instagram
+        connection is configured. Drafts can be reordered and saved as a
+        planning file, but sessions and finished print-ready books are
+        not saved.
       </p>
 
-      <h3>3. How It Works Under the Hood &amp; Riskiest Assumption (Week 2+)</h3>
+      <h3>
+        3. How It Works Under the Hood &amp; Riskiest Assumption (Week 2+)
+      </h3>
 
       <p>
-        <strong>Riskiest Assumption:</strong> The suggestions need to feel
-        like my taste and save me time. A sharp photo is not necessarily
-        my favorite expression or most meaningful memory. The current
-        color, detail, orientation, and like/skip signals cannot fully
-        capture that.
+        <strong>Riskiest Assumption:</strong>
+        The suggestions need to feel like my taste and save me time.
+        A sharp photo is not necessarily my favorite expression or most
+        meaningful memory. The current color, detail, orientation, and
+        like/skip signals cannot fully capture that.
       </p>
 
       <p>
-        <strong>How I’ll test it:</strong> Choose my favorites from one real
-        trip before seeing suggestions, then record which picks I keep,
-        replace, or reject and how long review takes. Repeat with a friend
-        or classmate.
+        <strong>How I’ll test it:</strong>
+        Choose my favorites from one real trip before seeing suggestions,
+        then record which picks I keep, replace, or reject and how long
+        review takes. Repeat with a friend or classmate.
       </p>
 
       <p>
@@ -430,8 +377,8 @@ The $5.60 is labeled as an estimate from your subscription, not a measured token
       </p>
 
       <p class="meta">
-        Built with HTML, CSS, and JavaScript. Small previews support
-        browsing; original viewing and downloads use unchanged source files.
+        Built with HTML, CSS, and JavaScript. Small previews support browsing;
+        original viewing and downloads use unchanged source files.
         Similar-shot groups need human review. Trained AI and authorized
         Instagram analysis are future work.
       </p>
@@ -459,7 +406,9 @@ The $5.60 is labeled as an estimate from your subscription, not a measured token
         </div>
 
         <div class="stat-box">
-          <div class="stat-label">User Evidence (Analytics from Build 2)</div>
+          <div class="stat-label">
+            User Evidence (Analytics from Build 2)
+          </div>
           <div class="stat-value">Not yet measured</div>
           <p>
             No external testing or analytics yet. I’ll track review time,
@@ -474,337 +423,151 @@ The $5.60 is labeled as an estimate from your subscription, not a measured token
       </div>
     </section>
 
+    <!-- WEEKLY BUILD LOG -->
     <section id="build-log">
       <h2>Weekly Build Log</h2>
+
       <p class="meta">
         Build on at least two separate days each week outside class,
         including the November 3 break. Record actual progress, failures,
         PRD changes, costs, and hours. All deadlines are noon, New York time.
       </p>
 
-
-[Image #1] HERE IS 2ND SCREENSHOT
-
-I’ll add this as the second screenshot, showing style examples and output options. Both screenshots show setup screens, so the captions will describe them without claiming they show completed selections.
-• Ran python3 - <<'PY' …
-  └ PASS: balanced HTML, both screenshot files exist, no TODO markers or third-person name.
-Both screenshots are included below. Upload them to docs/images/ on GitHub with these names:
-
-- First screenshot: tripbox-prototype.png
-- Second screenshot: tripbox-preferences.png
-
-Then replace docs/index.html with this full code:
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tripbox · Building with AI (Fall 2026)</title>
-
-  <style>
-    :root {
-      --bg: #fafafa;
-      --card: #ffffff;
-      --text: #111827;
-      --muted: #4b5563;
-      --border: #e5e7eb;
-      --accent: #1d63dc;
-      --tag-bg: #eff6ff;
-      --tag-text: #1e40af;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "DM Sans", "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
-    .container {
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 48px 24px 80px;
-    }
-    header {
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 28px;
-      margin-bottom: 32px;
-    }
-    .eyebrow {
-      display: inline-block;
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      background: var(--tag-bg);
-      color: var(--tag-text);
-      padding: 4px 10px;
-      border-radius: 999px;
-      margin-bottom: 12px;
-    }
-    h1 {
-      font-size: 36px;
-      line-height: 1.15;
-      margin: 0 0 12px;
-      letter-spacing: -0.02em;
-    }
-    .tagline {
-      font-size: 19px;
-      color: var(--muted);
-      margin: 0 0 20px;
-    }
-    .cta-row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .btn {
-      display: inline-block;
-      padding: 10px 18px;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 15px;
-      text-decoration: none;
-      background: var(--accent);
-      color: #fff;
-    }
-    .btn-secondary {
-      background: var(--card);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-    section {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px 28px;
-      margin-bottom: 24px;
-    }
-    h2 {
-      font-size: 20px;
-      margin: 0 0 14px;
-      letter-spacing: -0.01em;
-    }
-    h3 {
-      font-size: 16px;
-      margin: 18px 0 6px;
-    }
-    p, ul {
-      margin: 0 0 12px;
-      color: #1f2937;
-    }
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 16px;
-    }
-    .stat-box {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 14px 16px;
-      background: var(--bg);
-    }
-    .stat-label {
-      font-size: 12px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-    .stat-value {
-      font-size: 20px;
-      font-weight: 700;
-      margin-top: 4px;
-    }
-    .log-entry {
-      border-top: 1px solid var(--border);
-      padding-top: 16px;
-      margin-top: 16px;
-    }
-    .log-entry:first-of-type {
-      border-top: none;
-      padding-top: 0;
-      margin-top: 0;
-    }
-    .meta {
-      font-size: 13px;
-      color: var(--muted);
-    }
-    figure {
-      margin: 16px 0;
-    }
-    figure img {
-      display: block;
-      width: 100%;
-      height: auto;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-    }
-    figcaption {
-      margin-top: 8px;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="container">
-    <header>
-      <span class="eyebrow">NYU Stern · Building with AI · Fall 2026</span>
-      <h1>Tripbox</h1>
-      <p class="tagline">Your trip, your taste, your favorite memories—sorted for sharing and keeping.</p>
-
-      <p>Hundreds of trip photos, but nothing posted or printed? Tripbox helps turn camera-roll chaos into favorites for Instagram posts, Stories, photo books, and frames. The goal is to learn your taste, sift through similar shots, and help you choose what to share and keep—without changing the original pictures.</p>
-
-      <div class="cta-row">
-        <a class="btn" href="#live-demo">See the Product →</a>
-        <a class="btn btn-secondary" href="#prd">Read the Living PRD</a>
-        <a class="btn btn-secondary" href="#build-log">Weekly Build Log</a>
-      </div>
-    </header>
-
-    <section id="live-demo">
-      <h2>Product Showcase (Prototype / Live App / 2-Min Video)</h2>
-
-      <p><strong>Current Status:</strong> Build 1: local browser prototype.</p>
-
-      <p><strong>Demo:</strong> Import photos → add style examples → review suggested picks and similar shots → create post, Story, book-page, and frame drafts.</p>
-
-      <figure>
-        <img
-          src="images/tripbox-prototype.png"
-          alt="Tripbox welcome screen with a playful purple title, memory navigation, collection name field, and local photo picker."
-        />
-        <figcaption class="meta">Build 1: welcome screen and photo import, before a collection is loaded.</figcaption>
-      </figure>
-
-      <figure>
-        <img
-          src="images/tripbox-preferences.png"
-          alt="Tripbox style setup with account type, example photo picker, color preference, and output options for posts, Stories, photo books, and frames."
-        />
-        <figcaption class="meta">Build 1: style-example inputs and output options, before photos or examples are added.</figcaption>
-      </figure>
-
-      <p class="meta">The prototype opens locally through <code>prototype/index.html</code>. Current recommendations use local visual matching, not trained AI. Photos stay on the device, originals remain unchanged, and working selections disappear on refresh.</p>
-    </section>
-
-    <section id="prd">
-      <h2>Living PRD (Product Requirements Document)</h2>
-      <p class="meta">Updated every week as I test with real users and learn what works.</p>
-
-      <h3>1. Target User &amp; The Job to Be Done</h3>
-
-      <p><strong>Who is this for?</strong> I’m my first target user: an NYU student who takes hundreds of photos on trips and at social events. I care about my personal style, which pictures I like of myself, and which memories deserve more than a place in my camera roll. I can test with my own photos, then recruit friends and classmates; their needs have not yet been validated.</p>
-
-      <p><strong>The painful “Before” workflow:</strong> I scroll through similar shots repeatedly, make separate choices for Instagram and keepsakes, and lose track of favorites across albums and screenshots. Posting gets delayed, and photo books and prints never happen.</p>
-
-      <p><strong>The “After” workflow:</strong> I add a trip, supply examples of my taste, and choose what I want to make. Tripbox suggests picks by purpose and groups similar shots. I review and replace selections, then arrange drafts for sharing and keeping. Personalized AI and direct Instagram style learning remain the long-term goal.</p>
-
-      <h3>2. Scope &amp; Explicit Non-Goals</h3>
-
-      <ul>
-        <li><strong>In Scope (Core Workflow):</strong> Add trip photos → provide style examples and preferences → review suggested picks and duplicates → revise selections → create output drafts.</li>
-        <li><strong>Output options:</strong> Choose the number of posts and up to 20 photos per post, Story photos, book pages and photos per page, and frame quantity, size, orientation, and mat. A photo can appear in multiple groups.</li>
-        <li><strong>Out of Scope #1:</strong> Photo editing: no retouching, face or body changes, filters, generated replacements, or edits to originals.</li>
-        <li><strong>Out of Scope #2:</strong> Automatic Instagram publishing or scheduling.</li>
-        <li><strong>Out of Scope #3:</strong> Print orders, frame purchases, or purchasing finished photo books.</li>
-      </ul>
-
-      <p><strong>Build 1 limits:</strong> No overall import or favorites cap; only each carousel is limited to 20 photos. A simulated 240-photo-record check passed, but performance with 200+ real phone photos is unmeasured. Personal, Creator, and Business users can supply examples manually; no live Instagram connection is configured. Drafts can be reordered and saved as a planning file, but sessions and finished print-ready books are not saved.</p>
-
-      <h3>3. How It Works Under the Hood &amp; Riskiest Assumption (Week 2+)</h3>
-
-      <p><strong>Riskiest Assumption:</strong> The suggestions need to feel like my taste and save me time. A sharp photo is not necessarily my favorite expression or most meaningful memory. The current color, detail, orientation, and like/skip signals cannot fully capture that.</p>
-
-      <p><strong>How I’ll test it:</strong> Choose my favorites from one real trip before seeing suggestions, then record which picks I keep, replace, or reject and how long review takes. Repeat with a friend or classmate.</p>
-
-      <p><strong>Simple Architecture:</strong> Local photos + example favorites + output preferences → browser-based visual matching and approximate duplicate grouping → editable selections → carousel, Story, book-page, and frame drafts.</p>
-
-      <p class="meta">Built with HTML, CSS, and JavaScript. Small previews support browsing; original viewing and downloads use unchanged source files. Similar-shot groups need human review. Trained AI and authorized Instagram analysis are future work.</p>
-
-      <h3>4. Unit Economics &amp; Analytics Snapshot (Updated Weekly)</h3>
-
-      <div class="grid-2">
-        <div class="stat-box">
-          <div class="stat-label">Cumulative Build Spend</div>
-          <div class="stat-value">~$5.60 estimated</div>
-          <p>I pay $20/month for my OpenAI subscription. $5.60 is my rough project-cost allocation, not measured token spending or an additional API bill.</p>
-        </div>
-
-        <div class="stat-box">
-          <div class="stat-label">Est. Cost Per User Run</div>
-          <div class="stat-value">Not yet measured</div>
-          <p>The prototype runs in the browser without model calls. Future AI and storage costs remain to be estimated.</p>
-        </div>
-
-        <div class="stat-box">
-          <div class="stat-label">User Evidence (Analytics from Build 2)</div>
-          <div class="stat-value">Not yet measured</div>
-          <p>No external testing or analytics yet. I’ll track review time, suggestions kept, replacements, and completed groups.</p>
-        </div>
-
-        <div class="stat-box">
-          <div class="stat-label">Sponsor Call (Week 6)</div>
-          <div class="stat-value">TBC</div>
-        </div>
-      </div>
-    </section>
-
-    <section id="build-log">
-      <h2>Weekly Build Log</h2>
-
-      <p class="meta">Build on at least two separate days each week outside class, including the November 3 break. Record actual progress, failures, PRD changes, costs, and hours. All deadlines are noon, New York time.</p>
-
       <div class="log-entry">
         <h3>Build 1 · Intent.md &amp; Throwaway Prototype (Due Nov 9)</h3>
+
         <ul>
-          <li><strong>What shipped locally:</strong> Built a playful, scrapbook-style browser prototype with photo import, favorites, purpose labels, style-example inputs, local visual recommendations, similar-shot review, output options, editable drafts, and original-photo downloads.</li>
+          <li>
+            <strong>What shipped locally:</strong>
+            Built a playful, scrapbook-style browser prototype with photo
+            import, favorites, purpose labels, style-example inputs, local
+            visual recommendations, similar-shot review, output options,
+            editable drafts, and original-photo downloads.
+          </li>
 
-          <li><strong>Work with AI:</strong> I used a coding agent to turn my idea into a local HTML/CSS/JavaScript prototype, refine its design and scope, and write this Product Page. I also worked through opening local files and the steps for committing and pushing changes to GitHub.</li>
+          <li>
+            <strong>Work with AI:</strong>
+            I used a coding agent to turn my idea into a local
+            HTML/CSS/JavaScript prototype, refine its design and scope,
+            and write this Product Page. I also worked through opening
+            local files and the steps for committing and pushing changes
+            to GitHub.
+          </li>
 
-          <li><strong>What broke / changed in PRD:</strong> The local server address did not open, so I switched to opening the HTML through Finder. I removed the overall 20-favorite cap, kept 20 photos per carousel, and added phone-photo instructions and configurable outputs. The first demo picks became local visual matching; trained AI and live Instagram access are still future work.</li>
+          <li>
+            <strong>What broke / changed in PRD:</strong>
+            The local server address did not open, so I switched to opening
+            the HTML through Finder. I removed the overall 20-favorite cap,
+            kept 20 photos per carousel, and added phone-photo instructions
+            and configurable outputs. The first demo picks became local
+            visual matching; trained AI and live Instagram access are still
+            future work.
+          </li>
 
-          <li><strong>Checks:</strong> Agent-run syntax and simulated interaction checks passed, including 240 photo records, duplicate grouping, style-dependent ranking, original file references, and two 20-photo post drafts. Real-photo performance, phone behavior, and recommendation usefulness still need testing.</li>
+          <li>
+            <strong>Checks:</strong>
+            Agent-run syntax and simulated interaction checks passed,
+            including 240 photo records, duplicate grouping,
+            style-dependent ranking, original file references, and two
+            20-photo post drafts. Real-photo performance, phone behavior,
+            and recommendation usefulness still need testing.
+          </li>
 
-          <li><strong>Cost &amp; time this week:</strong> ~$5.60 estimated project allocation from my $20/month OpenAI subscription; not measured token spend · 8 hours.</li>
+          <li>
+            <strong>Cost &amp; time this week:</strong>
+            ~$5.60 estimated project allocation from my $20/month OpenAI
+            subscription; not measured token spend · 8 hours.
+          </li>
 
-          <li><strong>Evidence:</strong> The welcome/import and preference/output-options screenshots are shown above. PostHog, a public app deployment, and the final video are not included in Build 1.</li>
+          <li>
+            <strong>Evidence:</strong>
+            The welcome/import and preference/output-options screenshots
+            are shown above. PostHog, a public app deployment, and the final
+            video are not included in Build 1.
+          </li>
         </ul>
       </div>
 
       <div class="log-entry">
         <h3>Build 2 · Smallest Local Version &amp; PostHog (Due Nov 16)</h3>
+
         <ul>
-          <li><strong>Planned work:</strong> Refine the local workflow, update PRD v2, and install and verify PostHog on the app and Product Page.</li>
-          <li><strong>Results and PRD changes:</strong> Not yet recorded.</li>
-          <li><strong>Cost &amp; time:</strong> Not yet recorded.</li>
+          <li>
+            <strong>Planned work:</strong>
+            Refine the local workflow, update PRD v2, and install and verify
+            PostHog on the app and Product Page.
+          </li>
+          <li>
+            <strong>Results and PRD changes:</strong>
+            Not yet recorded.
+          </li>
+          <li>
+            <strong>Cost &amp; time:</strong>
+            Not yet recorded.
+          </li>
         </ul>
       </div>
 
       <div class="log-entry">
         <h3>Build 3 · Build.exe: The Core Workflow (Due Nov 23)</h3>
+
         <ul>
-          <li><strong>Planned work:</strong> Verify the end-to-end workflow with real inputs and add funnel events.</li>
-          <li><strong>Results and PRD changes:</strong> Not yet recorded.</li>
-          <li><strong>Cost &amp; time:</strong> Not yet recorded.</li>
+          <li>
+            <strong>Planned work:</strong>
+            Verify the end-to-end workflow with real inputs and add
+            funnel events.
+          </li>
+          <li>
+            <strong>Results and PRD changes:</strong>
+            Not yet recorded.
+          </li>
+          <li>
+            <strong>Cost &amp; time:</strong>
+            Not yet recorded.
+          </li>
         </ul>
       </div>
 
       <div class="log-entry">
         <h3>Build 4 · Test.py: Choose Track A or Track B (Due Nov 30)</h3>
+
         <ul>
-          <li><strong>Evaluation track:</strong> Not yet selected: a 10-case domain evaluation and one outside review, or testing with 3–5 outside users.</li>
-          <li><strong>Results, improvements, and PRD v4:</strong> Not yet recorded.</li>
-          <li><strong>Cost &amp; time:</strong> Not yet recorded.</li>
+          <li>
+            <strong>Evaluation track:</strong>
+            Not yet selected: a 10-case domain evaluation and one outside
+            review, or testing with 3–5 outside users.
+          </li>
+          <li>
+            <strong>Results, improvements, and PRD v4:</strong>
+            Not yet recorded.
+          </li>
+          <li>
+            <strong>Cost &amp; time:</strong>
+            Not yet recorded.
+          </li>
         </ul>
       </div>
 
       <div class="log-entry">
-        <h3>Build 5 · Ship.installer: Launch Ops, Rollback Check &amp; 2-Min Video (Due Dec 7)</h3>
+        <h3>
+          Build 5 · Ship.installer: Launch Ops, Rollback Check &amp;
+          2-Min Video (Due Dec 7)
+        </h3>
+
         <ul>
-          <li><strong>Planned work:</strong> Deploy the app, check secrets and spending limits, verify a two-minute rollback, and record the final video.</li>
-          <li><strong>Launch results and final polish:</strong> Not yet recorded.</li>
-          <li><strong>Cost &amp; time:</strong> Not yet recorded.</li>
+          <li>
+            <strong>Planned work:</strong>
+            Deploy the app, check secrets and spending limits, verify
+            a two-minute rollback, and record the final video.
+          </li>
+          <li>
+            <strong>Launch results and final polish:</strong>
+            Not yet recorded.
+          </li>
+          <li>
+            <strong>Cost &amp; time:</strong>
+            Not yet recorded.
+          </li>
         </ul>
       </div>
     </section>
