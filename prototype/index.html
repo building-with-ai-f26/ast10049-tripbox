@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tripbox · Local prototype</title>
+<link rel="stylesheet" href="style.css">
+<script src="curation.js" defer></script>
+<script src="reference-store.js" defer></script>
+<script src="app.js" defer></script>
+</head>
+<body>
+<main>
+<header class="masthead"><a class="wordmark" href="#start">Tripbox<span aria-hidden="true">.</span></a><span class="local-badge">Your photos, kept local</span><button id="new-project" type="button">New project</button></header>
+<nav class="app-nav" aria-label="Your workflow"><a href="#start"><span>1</span> Your photos</a><a href="#gallery"><span>2</span> Review picks</a><a href="#drafts-section"><span>3</span> Create drafts</a><a href="#taste" class="library-link">My style library</a></nav>
+<div class="workspace-intro"><h1>A trip worth keeping.</h1><p>Start with your photos. Make room for the people, places, and little moments you love.</p></div>
+<aside class="privacy-note">Trip photos stay in this tab. Save your style library below to reuse those references next time. Originals are never changed.</aside>
+<div class="setup-layout">
+<section aria-labelledby="start"><h2 id="start">Your photos</h2><label for="name">Trip or collection name</label><input id="name" maxlength="100" placeholder="e.g. A weekend by the sea"><label for="files">Add photos from this trip</label><input id="files" type="file" accept="image/*" multiple><p>Bring the whole trip. We’ll help you narrow it down, one moment at a time.</p>
+<details class="import-help"><summary>Bringing photos from your phone?</summary><p class="phone-tip">On your phone, tap the picker and choose multiple photos from your library. On a Mac? AirDrop photos from your phone first, then choose them here. The app must be opened on your phone to use its photo library.</p></details>
+<p>JPG, PNG, and other images your browser can read are welcome. Some HEIC phone photos need conversion to JPG first. Import uses small previews; your originals stay untouched.</p>
+<progress id="progress" value="0" max="1" hidden aria-label="Photo import progress"></progress><p id="import-status" role="status"></p></section>
+<section class="taste" id="taste"><h2>A little more you</h2>
+<p>Your past favorites become the reference shelf for your next trip. Add Instagram photos or screenshots, then save the library to reuse it.</p>
+<details class="account-help"><summary>About Instagram account connections</summary><label for="account">Your Instagram account type</label><select id="account"><option>Personal</option><option>Creator</option><option>Business</option></select><p id="account-status" role="status"></p></details>
+<div id="reference-grid" class="reference-grid" aria-label="Your style reference photos"></div>
+<button id="more-references" type="button" hidden>Show more references</button>
+<label class="save-choice"><input id="save-references" type="checkbox"> Keep my style library for future projects</label>
+<p id="library-status" role="status">Not saved yet. References will clear when you close or refresh this tab.</p>
+<div class="library-actions"><button id="clear-references" type="button">Clear library</button><button id="undo-reference" type="button" disabled>Undo removal</button><button id="backup-references" type="button">Download library backup</button></div>
+<label for="example-source">Add examples from…</label>
+<select id="example-source"><option value="photos">Instagram photos, screenshots, or saved favorites</option><option value="export">An Instagram media export (JSON + photos)</option></select>
+<div id="photo-examples"><label for="examples">Choose example photos, screenshots, or Instagram JSON files</label><input id="examples" type="file" accept="image/*,.json,application/json" multiple></div>
+<div id="instagram-export" hidden>
+<p>Unzip your Instagram download first. JSON lists your media; the separate photos supply the visual examples. ZIP files and videos are not analyzed.</p>
+<button id="export-help" type="button" aria-haspopup="dialog">How to export my Instagram media</button>
+<label for="instagram-json">1. Choose your media JSON files (posts, stories, or reels)</label><input id="instagram-json" type="file" accept=".json,application/json" multiple>
+<label for="instagram-folder">2. Choose the unzipped export folder, including its media</label><input id="instagram-folder" type="file" webkitdirectory multiple aria-describedby="folder-help">
+<p id="folder-help">Select the whole extracted folder. Tripbox matches the JSON references to local photos; it does not connect to Instagram. Your browser may ask to confirm access to the folder. Files are read locally, not uploaded.</p>
+</div>
+<p id="example-status" role="status">No examples yet. Add some to enable style-informed suggestions.</p>
+<dialog id="export-instructions" aria-labelledby="export-help-title">
+<h2 id="export-help-title">Export your Instagram media</h2>
+<ol>
+<li>Open Instagram and go to your profile.</li>
+<li>Tap the menu (☰), then <strong>Accounts Center</strong> (sometimes called Meta Account).</li>
+<li>Open <strong>Your information and permissions → Export your information</strong> (or Download your information).</li>
+<li>Choose <strong>Create export</strong>, select your Instagram account, then <strong>Export to device</strong>.</li>
+<li>Under <strong>Customize information</strong>, select <strong>Media</strong>. If subcategories appear, include Posts, Stories, Reels, and Archived content where available. Story interactions is not your posted stories. You do not need messages or personal information.</li>
+<li>Choose <strong>All time</strong>, <strong>High</strong> media quality, and <strong>JSON</strong> format. Tap Start export or Create files.</li>
+<li>When Instagram notifies you, return to the export screen and download your ZIP file. On a Mac, double-click it to unzip.</li>
+<li>Back in Tripbox, choose the media JSON files and the whole unzipped export folder. You can also choose just the folder: Tripbox looks for JSON inside it.</li>
+</ol>
+<p>Button names may vary. Only photos present in the export can be matched. Videos, captions, and story layouts are not analyzed by this prototype.</p>
+<form method="dialog"><button autofocus>Got it</button></form>
+</dialog>
+</section></div>
+<section id="project-options"><div class="section-heading"><div><h2>What are we making?</h2><p>Start with these quantities. You can change them before creating your drafts.</p></div></div><label for="people-priority">Instagram photo mix</label><select id="people-priority"><option value="people">Prioritize me and other people</option><option value="balanced">Balance all subjects</option></select><p class="helper">In Review picks, tag photos as “Me” or “Other people.” Those tags guide selection; Tripbox does not recognize faces or identify you automatically.</p><details class="output-options"><summary>Adjust quantities, color mood, and frame options</summary><label for="colors">Color mood</label><select id="colors"><option value="examples">Follow my examples</option><option value="bright">Bright and colorful</option><option value="soft">Soft and neutral</option></select>
+<div class="preferences">
+<label>Instagram posts<input id="post-count" type="number" min="0" max="20" value="1"></label>
+<label>Photos per post (1–20)<input id="post-size" type="number" min="1" max="20" value="10"></label>
+<label>Story photos<input id="story-count" type="number" min="0" max="200" value="8"></label>
+<label>Photo-book pages<input id="book-pages" type="number" min="0" max="200" value="12"></label>
+<label>Photos per page<input id="page-size" type="number" min="1" max="6" value="2"></label>
+<label>Frame photos<input id="frame-count" type="number" min="0" max="50" value="2"></label>
+<label>Frame size<select id="frame-size"><option value="4,6">4 × 6 inches</option><option value="5,7">5 × 7 inches</option><option value="8,10" selected>8 × 10 inches</option><option value="11,14">11 × 14 inches</option></select></label>
+<label>Frame orientation<select id="frame-orientation"><option value="portrait">Portrait</option><option value="landscape">Landscape</option></select></label>
+<label>Frame mat<select id="frame-mat"><option value="white">White</option><option value="cream">Cream</option><option value="black">Black</option></select></label></div>
+</details><div class="primary-actions"><button id="analyze" type="button" class="primary">Suggest my picks</button><a href="#gallery">Or review photos myself</a></div><p id="analysis-status" role="status">Add trip photos to begin. Reference photos are optional. Suggestions use local visual measurements and your subject tags. Regenerating replaces automatic picks and preserves your explicit keeps.</p>
+</section>
+<section id="gallery"><div class="section-heading"><div><h2>Review your picks</h2><p>Keep what matters. Skip the rest. Tag yourself to make Instagram picks more personal.</p></div><button id="start-review" type="button">Review one at a time</button></div><h3 id="collection-name">My memory pile</h3><div class="toolbar"><button id="all" aria-pressed="true">All photos</button><button id="shortlist" aria-pressed="false">Keepers</button><button id="unreviewed" aria-pressed="false">Unreviewed</button><button id="skipped" aria-pressed="false">Skipped</button><label class="filter-label" for="subject-filter">Show<select id="subject-filter"><option value="all">All subjects</option><option value="me">Me</option><option value="people">Other people</option><option value="scenery">Scenery</option><option value="unknown">Not tagged</option></select></label><strong id="count" aria-live="polite">0 keepers · 0 photos</strong></div><div class="review-tools"><button id="duplicates" type="button">Compare similar shots</button><button id="undo-choice" type="button" disabled>Undo last choice</button><p id="duplicate-status">Add photos to compare similar shots.</p></div><p id="message" role="status"></p><p id="empty">Your collection is empty. Choose local JPG or PNG photos above to begin.</p><div id="grid" class="grid"></div><button id="more" type="button" hidden>Show more memories ↓</button></section>
+<section id="groups" class="groups-section"><h2>Your groups</h2><p>Your current labels appear here immediately. One favorite can belong to several groups. Return to All photos to revise your picks. View or download the untouched originals from photo cards. Build drafts below; nothing is posted or purchased.</p><div id="albums"></div></section>
+<section id="drafts-section"><h2>Create your drafts</h2><p>Your labels become carousel, Story, photo-book page, and frame drafts. Change counts above, then rebuild. Drafts keep every image’s full composition: no automatic crops. Move photos earlier or later to change their order.</p><button id="build-drafts" type="button" class="primary">Create / rebuild my drafts</button><button id="export-plan" type="button">Save draft plan (.json)</button><p id="draft-status" role="status"></p><div id="drafts"></div><p>These are local planning layouts, not finished print-ready books or published posts. Download originals separately. Trip projects clear on refresh. Your style library stays only if you save it above; draft plan files contain filenames and settings, not photos.</p></section>
+<dialog id="review-dialog" class="review-dialog" aria-labelledby="review-title">
+<div class="review-header"><h2 id="review-title">Review photo</h2><form method="dialog"><button aria-label="Close photo review">Close</button></form></div>
+<img id="review-image" alt="">
+<p id="review-position"></p><p id="review-state" role="status"></p>
+<div class="review-subjects" aria-label="Who is in this photo?"><span>In this photo</span><button id="tag-me" type="button">Me</button><button id="tag-people" type="button">Other people</button><button id="tag-scenery" type="button">Scenery</button><button id="tag-unknown" type="button">Not tagged</button></div>
+<div class="review-actions"><button id="review-prev" type="button">Previous</button><button id="review-skip" type="button">Skip <kbd>S</kbd></button><button id="review-keep" type="button" class="primary">Keep <kbd>K</kbd></button><button id="review-next" type="button">Next</button><button id="review-undo" type="button">Undo <kbd>U</kbd></button></div>
+<p class="helper">Use K to keep, S to skip, U to undo, or arrow keys to move. Escape closes review.</p>
+</dialog>
+<dialog id="new-project-dialog" aria-labelledby="new-project-title"><h2 id="new-project-title">Start a new project?</h2><p>This clears this trip’s photos, picks, and drafts. Your style references stay available. Download any draft plan you want to keep first.</p><form method="dialog"><button>Keep working</button><button id="confirm-new-project" type="button" class="primary">Start new project</button></form></dialog>
+<footer>Made for memories · Local visual matching · No live Instagram connection, trained AI model, automatic posting, or print ordering.</footer>
+</main>
+</body></html>
