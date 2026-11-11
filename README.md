@@ -1,45 +1,60 @@
-# [Project Name]
+# Tripbox
 
-> **One-line pitch:** [Who is this for, and what job does it do for them?]
+> Your trip, your taste, your favorite memories—sorted for sharing and keeping.
 
-- **Builder:** [Your Name] (`@github-handle`)
-- **Pod:** [Pod Name / Number]
-- **Product Page & Living PRD:** [Add your GitHub Pages URL]
-- **App:** runs locally through Week 4; add a cloud URL in Build 5.
+Tripbox helps turn camera-roll chaos into favorites for Instagram posts, Stories, photo books, and frames, without changing your original photos.
 
-## Start here: Build 1
+- **Builder:** Amanda Tripodi
+- **Product page, living PRD, and build log:** [Visit Tripbox](https://building-with-ai-f26.github.io/ast10049-tripbox/)
+- **Interactive prototype:** [Try Tripbox in your browser](https://building-with-ai-f26.github.io/ast10049-tripbox/prototype/)
+- **Repository:** [ast10049-tripbox](https://github.com/building-with-ai-f26/ast10049-tripbox)
 
-**Due Monday, November 9 at noon, New York time.** No class November 3; keep building that week.
+## Try the core workflow
 
-1. Join the [class organization](https://github.com/building-with-ai-f26), then use this template to create a **public** repo named `<netid>-<project-slug>`. Ask Christian or Hew if the organization is missing from the owner list.
-2. Set up Git and one coding agent during the week of October 27. Follow the [Icerynk setup guide](https://www.icerynk.com/c/fa26-tech-gb-2160-dm2-f2/content/pre-class-setup-github-openrouter-your-coding-agent).
-3. Publish [`docs/index.html`](./docs/index.html): **Settings → Pages → Deploy from a branch → main → /docs → Save**. When deployment finishes, open `https://building-with-ai-f26.github.io/<your-repo-name>/`.
-4. Fill in PRD v1: a reachable user, their painful before/after workflow, one core workflow, and three non-goals.
-5. Build a rough local prototype. Add a screenshot or GIF and an honest Build 1 log to the Product Page, including progress, learning, problems, costs, and hours.
-6. Push meaningful commits on **at least two separate days each week outside class**, including the November 3 break.
-7. Submit your **Product Page URL and repository URL in Icerynk**. Come ready to demo the prototype in two minutes on November 10.
+No account, installation, or API key is needed. Open the prototype on the device containing your photos.
 
-Create your PostHog account in Week 1. Install it on the Product Page and local app in **Build 2**, then verify events. The Product Page is public from Build 1; the app can stay local through Week 4.
+1. Name your trip and choose a few JPG or PNG photos from your device. Some HEIC photos may need conversion to JPG.
+2. Optionally add past favorites or Instagram screenshots as style references.
+3. Adjust the quantities for posts, Stories, photo-book pages, and frames.
+4. Generate suggested picks, review similar shots, and keep or skip photos. Tag photos as “Me,” “Other people,” or “Scenery” to guide selection.
+5. Assign favorites to their uses, create drafts, and reorder photos.
+6. Save a draft plan as JSON or download your untouched originals.
 
-## Repository map
+Trip photos and working selections stay in the current tab and clear on refresh. Style references persist in this browser only when you choose to save the library. A draft-plan download contains filenames and settings, not the photos themselves.
 
-| File / folder | Purpose |
-| --- | --- |
-| [`docs/index.html`](./docs/index.html) | Required public pitch, living PRD, and weekly build log. Update with actual work and evidence. |
-| [`Intent.md`](./Intent.md), [`Plan.md`](./Plan.md), [`journal/`](./journal/) | Optional drafting aids. No duplicate submission is required. |
-| [`AGENTS.md`](./AGENTS.md) | Local run commands, project context, and agent rules. Build 2 onward. |
-| [`tests/`](./tests/) | Verification guidance. Build 4 offers Track A domain evals **or** Track B user replays. |
-| [`SPONSOR_MEMO.md`](./SPONSOR_MEMO.md) | One-page recommendation backed by actual usage, full costs, and risks. Due December 14 at noon. |
+## What works today—and what is still a prototype
 
-[Icerynk](https://www.icerynk.com/c/fa26-tech-gb-2160-dm2-f2/content) holds the assignment instructions and submissions.
+The demo uses local visual matching rather than a trained AI model. It supports photo import, style references, keep/skip review, similar-shot groups, and planning layouts. It does not connect to Instagram, recognize faces, publish posts, order prints, or produce finished print-ready books. Visitors use their own photos; projects are not shared between people or devices.
 
-## Local setup
+## Public access and accessibility
 
-Clone **your own repository** and ask your coding agent to document the exact install and run commands here and in `AGENTS.md`.
+GitHub Pages serves the product page and prototype from `main` → `/docs`. Anyone with the prototype link can open it without a GitHub account. Photos are processed in the browser rather than uploaded to a server.
 
-```bash
-git clone https://github.com/building-with-ai-f26/<your-repo-name>.git
-cd <your-repo-name>
+The prototype includes responsive layouts, labeled controls, visible keyboard focus, status announcements, and reduced-motion support. In photo review, use **K** to keep, **S** to skip, **U** to undo, arrow keys to move, and **Escape** to close. Full keyboard, screen-reader, contrast, and mobile usability testing is still needed; these features are not a claim of complete accessibility.
+
+## Run locally
+
+No package installation or backend is required. With Python 3 installed:
+
+```sh
+git clone https://github.com/building-with-ai-f26/ast10049-tripbox.git
+cd ast10049-tripbox
+python3 -m http.server 8000 --bind 127.0.0.1 --directory docs
 ```
 
-If your app needs API keys, use a local environment file such as `.env`. Keep private keys out of source code, browser code, screenshots, and commits. The template ignores `.env`; `.env.example` contains placeholders only.
+Open [the product page](http://127.0.0.1:8000/) or [the prototype](http://127.0.0.1:8000/prototype/). Stop the server with Ctrl+C.
+
+## Project map
+
+| Path | Purpose |
+| --- | --- |
+| [`docs/index.html`](docs/index.html) | Public product page, living PRD, screenshots, and build log |
+| [`docs/prototype/`](docs/prototype/) | Runnable HTML, CSS, and JavaScript prototype |
+| [`docs/prototype/curation.js`](docs/prototype/curation.js) | Local photo matching and selection logic |
+| [`docs/prototype/reference-store.js`](docs/prototype/reference-store.js) | Browser storage for saved style references |
+| [`AGENTS.md`](AGENTS.md) | Coding-agent rules and project context |
+| [`tests/`](tests/) | Verification and user-feedback guidance |
+| [`Intent.md`](Intent.md), [`Plan.md`](Plan.md), [`journal/`](journal/) | Planning and build notes |
+| [`SPONSOR_MEMO.md`](SPONSOR_MEMO.md) | Course sponsor memo |
+
+Edit the prototype directly in `docs/prototype/` so future changes are included in the GitHub Pages deployment.
