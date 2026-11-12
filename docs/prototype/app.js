@@ -428,7 +428,7 @@ function visiblePhotos(duplicateIds) {
   return result;
 }
 function rememberChoices(items) {
-  choiceHistory.push(items.map(p => ({ id: p.id, selected: p.selected, manualKeep: p.manualKeep, excluded: p.excluded, reviewed: p.reviewed, labels: [...p.labels], autoLabels: [...(p.autoLabels || [])], manualLabels: [...(p.manualLabels || [])] })));
+  choiceHistory.push(items.map(p => ({ id: p.id, selected: p.selected, manualKeep: p.manualKeep, excluded: p.excluded, reviewed: p.reviewed, reason: p.reason, labels: [...p.labels], autoLabels: [...(p.autoLabels || [])], manualLabels: [...(p.manualLabels || [])] })));
   if (choiceHistory.length > 100) choiceHistory.shift();
 }
 function setChoice(photo, choice) {
