@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tripbox · Building with AI (Fall 2026)</title>
+  <script src="analytics.js" defer></script>
 
   <style>
     :root {
@@ -218,7 +219,7 @@
       </p>
 
       <div class="cta-row">
-        <a class="btn" href="prototype/">Try the prototype →</a>
+        <a class="btn" href="prototype/" data-try-product>Try the prototype →</a>
         <a class="btn btn-secondary" href="#prd">Read the Living PRD</a>
         <a class="btn btn-secondary" href="#build-log">Weekly Build Log</a>
       </div>
@@ -230,7 +231,7 @@
 
       <p>
         <strong>Current Status:</strong>
-        Build 1: interactive browser prototype, available publicly below.
+        Build 2 in progress · November 12: public local-matching demo plus an OpenRouter-powered action in the local app.
       </p>
 
       <p>
@@ -260,22 +261,31 @@
         </figcaption>
       </figure>
 
+      <figure>
+        <img src="build-2-ai-demo.jpg" loading="lazy" alt="Local Tripbox app displaying two Post recommendations returned by a real OpenRouter AI call using synthetic test images." />
+        <figcaption class="meta">Build 2 technical check, November 12: real free-model response with 683 input tokens, 49 output tokens, and reported cost $0. Synthetic images test the workflow, not personal taste.</figcaption>
+      </figure>
+
       <p class="meta">
         <a href="prototype/">Open the interactive Tripbox prototype</a>
-        and choose photos from your device to begin. No account or installation is required. Current recommendations use local
-        visual matching, not trained AI. Photos stay on the device, originals
-        remain unchanged, and working selections disappear on refresh.
+        and choose photos from your device to begin. The public demo uses local visual matching.
+        The real AI action runs through <code>python3 server.py</code> on the builder’s laptop;
+        GitHub Pages does not run that backend. AI preview sharing requires an explicit checkbox.
+        Originals stay on the device. Trip selections clear on refresh; style references persist
+        in this browser only when saving is enabled.
       </p>
     </section>
 
     <!-- LIVING PRD -->
     <section id="prd">
-      <h2>Living PRD (Product Requirements Document)</h2>
+      <h2>Living PRD v2 · Updated November 12, 2026</h2>
 
       <p class="meta">
-        Updated every week as I test with real users and learn what works.
+        Current implementation and risk-test plan. External user testing and pod feedback have not yet been recorded.
       </p>
 
+      <p class="meta">This page and the prototype use PostHog for pageviews, clicks, and masked session replay.
+        Photo areas and input values are excluded from replay. Analytics may be blocked by browser settings.</p>
       <h3>1. Target User &amp; The Job to Be Done</h3>
 
       <p>
@@ -300,8 +310,9 @@
         I add a trip, supply examples of my taste, and choose what I want to
         make. Tripbox suggests picks by purpose and groups similar shots.
         I review and replace selections, then arrange drafts for sharing and
-        keeping. Personalized AI and direct Instagram style learning remain
-        the long-term goal.
+        keeping. An optional local AI action sends up to 12 trip previews and 3 supplied style references
+        through OpenRouter for up to 6 editable Post suggestions. Learning a personal model
+        and connecting directly to Instagram remain future work.
       </p>
 
       <h3>2. Scope &amp; Explicit Non-Goals</h3>
@@ -339,14 +350,14 @@
       </ul>
 
       <p>
-        <strong>Build 1 limits:</strong>
+        <strong>Current limits:</strong>
         No overall import or favorites cap; only each carousel is limited to
         20 photos. A simulated 240-photo-record check passed, but performance
         with 200+ real phone photos is unmeasured. Personal, Creator, and
         Business users can supply examples manually; no live Instagram
-        connection is configured. Drafts can be reordered and saved as a
-        planning file, but sessions and finished print-ready books are
-        not saved.
+        connection is configured. Drafts can be reordered and exported as a planning file, but trip sessions and finished print-ready books
+        are not saved. The style library can be saved separately to this browser’s IndexedDB.
+        AI evaluates a small batch, not an entire camera roll, and cannot identify who is in a photo.
       </p>
 
       <h3>
@@ -363,23 +374,26 @@
 
       <p>
         <strong>How I’ll test it:</strong>
-        Choose my favorites from one real trip before seeing suggestions,
-        then record which picks I keep, replace, or reject and how long
-        review takes. Repeat with a friend or classmate.
+        Start with a 12-photo batch from one real trip. Mark my favorites before asking AI,
+        then compare the returned suggestions with my prior keeps, record rejections/replacements,
+        and time review versus manual selection. Repeat with a friend or classmate.
+        Technical tests with synthetic images check the request path only; they do not validate taste or time savings.
       </p>
 
       <p>
         <strong>Simple Architecture:</strong>
-        Local photos + example favorites + output preferences →
-        browser-based visual matching and approximate duplicate grouping →
-        editable selections → carousel, Story, book-page, and frame drafts.
+        Browser imports and resizes local photos → optional explicit preview-sharing consent →
+        POST /api/recommend on the laptop’s Python server → OpenRouter /chat/completions
+        with nvidia/nemotron-3.5-super-vl:free → validated photo IDs and explanations → editable Post picks → drafts.
+        Local matching and approximate duplicate grouping remain available without an API call.
       </p>
 
       <p class="meta">
         Built with HTML, CSS, and JavaScript. Small previews support browsing;
         original viewing and downloads use unchanged source files.
-        Similar-shot groups need human review. Trained AI and authorized
-        Instagram analysis are future work.
+        The API key is read from ignored <code>.env</code> by <code>server.py</code> and never served to the browser.
+        The backend uses no database and binds only to 127.0.0.1. Opt-in style references use IndexedDB.
+        AI results require human review; authorized Instagram analysis is future work.
       </p>
 
       <h3>4. Unit Economics &amp; Analytics Snapshot (Updated Weekly)</h3>
@@ -397,11 +411,12 @@
 
         <div class="stat-box">
           <div class="stat-label">Est. Cost Per User Run</div>
-          <div class="stat-value">Not yet measured</div>
-          <p>
-            The prototype runs in the browser without model calls.
-            Future AI and storage costs remain to be estimated.
-          </p>
+          <div class="stat-value">$0 model tokens / free run</div>
+          <p>Default: <a href="https://openrouter.ai/nvidia/nemotron-3.5-super-vl:free">NVIDIA Nemotron 3.5 Super VL (free)</a>
+            through OpenRouter. Listed input/output token prices: $0, checked November 12. Example 100 runs/day × 30: $0 token cost,
+            but free-tier quotas may not permit that volume. No paid fallback is configured. Availability and rate limits can block calls.
+            For any future paid model: (input tokens × input price + output tokens × output price) / 1,000,000.
+            The app displays returned usage; confirm actual charges in OpenRouter Activity.</p>
         </div>
 
         <div class="stat-box">
@@ -410,8 +425,9 @@
           </div>
           <div class="stat-value">Not yet measured</div>
           <p>
-            No external testing or analytics yet. I’ll track review time,
-            suggestions kept, replacements, and completed groups.
+            PostHog instrumentation is installed on this page and the app: pageviews, masked autocapture,
+            clicked_try_product, and AI start/complete/failure events. Dashboard receipt and replay playback
+            must be verified separately. No external user results are claimed.
           </p>
         </div>
 
@@ -491,19 +507,21 @@
         <h3>Build 2 · Smallest Local Version &amp; PostHog (Due Nov 16)</h3>
 
         <ul>
-          <li>
-            <strong>Planned work:</strong>
-            Refine the local workflow, update PRD v2, and install and verify
-            PostHog on the app and Product Page.
-          </li>
-          <li>
-            <strong>Results and PRD changes:</strong>
-            Not yet recorded.
-          </li>
-          <li>
-            <strong>Cost &amp; time:</strong>
-            Not yet recorded.
-          </li>
+          <li><strong>Implemented November 12:</strong> loopback-only Python server, OpenRouter photo-preview recommendations,
+            explicit preview-sharing permission, response validation, bounded requests, editable Post picks,
+            and PostHog on the product page and app. Public local-matching demo remains available.</li>
+          <li><strong>PRD v2 changes:</strong> risk-test method, browser/server/API data flow,
+            style-library persistence, AI preview-sharing limits, and estimated unit cost.</li>
+          <li><strong>Verification:</strong> request validation and model-response tests; live browser/API checks are recorded in
+            <a href="https://github.com/building-with-ai-f26/ast10049-tripbox/blob/main/tests/build-2-verification.md">Build 2 verification notes</a>.
+            A real free-model browser call returned 2 editable picks (683 input / 49 output tokens, reported $0).
+            Synthetic checks are not user research.</li>
+          <li><strong>Remaining before submission:</strong> real-trip taste/time comparison, PostHog dashboard screenshot and replay playback,
+            actual cost/hours, and pod feedback. Bring the local app to class November 17.</li>
+          <li><strong>Cost &amp; time:</strong> this week’s actual spend and builder hours pending Amanda’s report.
+            Prior ~$5.60 subscription allocation is unchanged; it is not an API bill.</li>
+          <li><strong>Learn with AI:</strong> trace photo import → consent → local server → OpenRouter → validated picks.
+            Explain frontend/backend, tokens, localhost, .env, and replay in your own words; practice the questions in Plan.md.</li>
         </ul>
       </div>
 

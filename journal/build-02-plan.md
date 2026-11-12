@@ -1,38 +1,35 @@
-# Build 2: Plan.md & Smallest Local Version & PostHog
+# Build 2 — Working checklist
 
-Optional working notes. Publish your required build log on `docs/index.html`; no separate journal submission is required.
+Due Monday, November 16, 2026 at noon New York time. Bring the local app to class November 17.
+Canonical PRD and public log: `docs/index.html`.
 
-**Build due:** Monday, Nov 16, 2026 at 12:00 PM (Noon)
+## Implemented November 12
 
----
+- [x] Local Python server and OpenRouter recommendation request using bounded photo previews.
+- [x] API secret in ignored `.env`, never in `docs/` or GitHub.
+- [x] Explicit preview-sharing permission, editable picks, Undo, failure recovery.
+- [x] Public and local PostHog installation; masked replay configuration and photo blocking.
+- [x] PRD v2 risk/test plan, architecture, free-model unit economics.
+- [x] Project-specific AGENTS.md, README setup, and automated validation tests.
 
-## 1. What you made
-- **PRs / Commits shipped:** 
-- **Product Page URL / local demo evidence:** 
-- **Summary of what works now:** 
+## Verification and submission — do not claim these without evidence
 
-## 2. Metacognition ("Learn with AI"): Requests, APIs, `.env` & Analytics
-- **End-to-end trace of one user action in your app (explaining the main components and data flow):** 
-- **3 "What would break if..." questions your AI tutor asked about your architecture (and your answers):**
-  1. 
-  2. 
-  3. 
+- [x] Real free-model AI action returned 2 editable picks locally (683 input / 49 output tokens, $0); browser screenshot on product page.
+- [ ] Compare picks and review time using actual trip photos; record builder findings.
+- [ ] Verify product-page and app pageviews, click events, and a playable session replay in PostHog.
+- [ ] Save the PostHog dashboard screenshot for submission (hide private account information).
+- [ ] Record actual builder hours, costs, and pod feedback.
+- [ ] Verify meaningful commits pushed on two separate days during November 10–16. Do not backdate.
+- [ ] Submit product page, repository URL, and PostHog screenshot in Icerynk.
+- [ ] Practice frontend/backend, APIs/tokens, localhost/.env, analytics/replay; answer Plan.md questions in your own words.
+- [ ] Bring laptop with `python3 server.py` running November 17.
 
-## 3. What the agent did
-- **Agent(s) & Model(s) used:** 
-- **How you briefed/directed it (key prompts or `AGENTS.md` updates):** 
-- **Where you had to step in, edit by hand, or reset context:** 
+## What the agent did
 
-## 4. What didn't work
-- **Bugs, agent loops, or broken assumptions:** 
-- **How you diagnosed and fixed (or rolled back) them:** 
+Implemented browser → local backend → OpenRouter → validated editable Post picks, privacy-aware analytics configuration, and documentation. User selected OpenRouter, supplied the public PostHog snippet, saved the secret locally, and requested free models. Paid requests are not enabled as a fallback.
 
-## 5. What it cost
-- **Agent / Token spend this week:** `$___`
-- **Hosting / API runtime spend this week:** `$___`
-- **Your hours spent this week:** `___ hrs`
-- **Cumulative project spend to date:** `$___`
+## Limits and evidence
 
-## 6. Pod Critique Sign-off
-- **Tested by podmate(s):** 
-- **Key feedback to address next:**
+See `tests/build-2-verification.md`. Synthetic-image checks establish technical behavior only. They are not taste validation, pod critique, or user research. Actual model success, replay playback, and screenshot evidence must be recorded when observed.
+
+Agent/model name: Codex; exact coding model not recorded. Builder time/cost and outside feedback pending Amanda’s report. The earlier ~$5.60 Build 1 subscription allocation is not new API spend.
