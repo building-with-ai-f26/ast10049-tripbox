@@ -266,6 +266,18 @@
         <figcaption class="meta">Build 2 technical check, November 12: real free-model response with 683 input tokens, 49 output tokens, and reported cost $0. Synthetic images test the workflow, not personal taste.</figcaption>
       </figure>
 
+      <figure>
+        <img src="build-2-posthog-events.jpg" loading="lazy" alt="PostHog Activity showing received pageviews and click events for the local Tripbox app; the person column is hidden." />
+        <figcaption class="meta">Build 2 analytics check, November 12: pageviews and clicks received. The private
+          <a href="https://us.posthog.com/project/721209/dashboard/2344126">Build 2 evidence dashboard</a>
+          also shows clicked_try_product and AI completion events. These are technical test visits, not external user adoption.</figcaption>
+      </figure>
+      <figure>
+        <img src="build-2-posthog-replay.jpg" loading="lazy" alt="PostHog replay player showing Tripbox with text and the trip-name input masked." />
+        <figcaption class="meta">A real 14-second test replay was played after enabling session recording in the project.
+          Input values and text are masked; photo containers are blocked. The screenshot omits the visitor metadata panel.</figcaption>
+      </figure>
+
       <p class="meta">
         <a href="prototype/">Open the interactive Tripbox prototype</a>
         and choose photos from your device to begin. The public demo uses local visual matching.
@@ -423,11 +435,12 @@
           <div class="stat-label">
             User Evidence (Analytics from Build 2)
           </div>
-          <div class="stat-value">Not yet measured</div>
+          <div class="stat-value">Technical events verified</div>
           <p>
             PostHog instrumentation is installed on this page and the app: pageviews, masked autocapture,
-            clicked_try_product, and AI start/complete/failure events. Dashboard receipt and replay playback
-            must be verified separately. No external user results are claimed.
+            clicked_try_product, and AI start/complete/failure events. Public/local pageviews, clicks, clicked_try_product, and AI start/completion events were received.
+            A real masked replay was played November 12; a dashboard screenshot was saved for submission.
+            No external user results are claimed.
           </p>
         </div>
 
@@ -516,10 +529,12 @@
             <a href="https://github.com/building-with-ai-f26/ast10049-tripbox/blob/main/tests/build-2-verification.md">Build 2 verification notes</a>.
             A real free-model browser call returned 2 editable picks (683 input / 49 output tokens, reported $0).
             Synthetic checks are not user research.</li>
-          <li><strong>Remaining before submission:</strong> real-trip taste/time comparison, PostHog dashboard screenshot and replay playback,
-            actual cost/hours, and pod feedback. Bring the local app to class November 17.</li>
+          <li><strong>Remaining before submission:</strong> real-trip taste/time comparison, actual builder hours/cost totals, pod feedback, and Icerynk submission.
+            PostHog dashboard screenshot and masked replay playback are verified. Bring the local app to class November 17.</li>
           <li><strong>Cost &amp; time:</strong> this week’s actual spend and builder hours pending Amanda’s report.
             Prior ~$5.60 subscription allocation is unchanged; it is not an API bill.</li>
+          <li><strong>Analytics follow-up:</strong> enabled project-level session recording, corrected the launch event to use the loaded SDK,
+            and verified named clicks, pageviews, AI completions, and replay playback. Meaningful commits were pushed November 11 and 12.</li>
           <li><strong>Learn with AI:</strong> trace photo import → consent → local server → OpenRouter → validated picks.
             Explain frontend/backend, tokens, localhost, .env, and replay in your own words; practice the questions in Plan.md.</li>
         </ul>

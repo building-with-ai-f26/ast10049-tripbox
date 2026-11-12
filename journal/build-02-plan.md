@@ -16,10 +16,10 @@ Canonical PRD and public log: `docs/index.html`.
 
 - [x] Real free-model AI action returned 2 editable picks locally (683 input / 49 output tokens, $0); browser screenshot on product page.
 - [ ] Compare picks and review time using actual trip photos; record builder findings.
-- [ ] Verify product-page and app pageviews, click events, and a playable session replay in PostHog.
-- [ ] Save the PostHog dashboard screenshot for submission (hide private account information).
+- [x] Verified public/local pageviews, clicks, named launch and AI events, plus a playable masked 14-second replay.
+- [x] Saved the private PostHog dashboard screenshot for submission; public evidence hides person IDs/visitor metadata.
 - [ ] Record actual builder hours, costs, and pod feedback.
-- [ ] Verify meaningful commits pushed on two separate days during November 10–16. Do not backdate.
+- [x] Verified meaningful pushes on November 11 and 12. No backdating.
 - [ ] Submit product page, repository URL, and PostHog screenshot in Icerynk.
 - [ ] Practice frontend/backend, APIs/tokens, localhost/.env, analytics/replay; answer Plan.md questions in your own words.
 - [ ] Bring laptop with `python3 server.py` running November 17.

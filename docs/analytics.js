@@ -30,6 +30,6 @@
   });
   // Named event survives masked autocapture. No photo or user content is sent.
   document.addEventListener('click', event => {
-    if (event.target.closest('a[data-try-product]')) ph.capture('clicked_try_product');
+    if (event.target.closest('a[data-try-product]')) window.posthog.capture('clicked_try_product');
   });
 })();

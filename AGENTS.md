@@ -15,7 +15,7 @@
 - **Setup:** copy `.env.example` to `.env` only if `.env` does not already exist. Add `OPENROUTER_API_KEY` locally; never overwrite an existing secret. Default model: `nvidia/nemotron-3.5-super-vl:free`.
 - **Run AI app:** `python3 server.py`, then open `http://127.0.0.1:8000/prototype/`. Restart after changing `.env`; Ctrl+C stops it. `PORT` changes the port.
 - **Static demo only:** `python3 -m http.server 8000 --bind 127.0.0.1 --directory docs` (no AI endpoint).
-- **Tests:** `python3 -m unittest discover -s tests -v`; `node --check docs/prototype/ai.js`; `node --check docs/prototype/app.js`; `node --check docs/analytics.js`; `git diff --check`.
+- **Tests:** `python3 -m unittest discover -s tests -v`; `node --check docs/prototype/ai.js`; `node --check docs/prototype/app.js`; `node --check docs/analytics.js`; `node tests/test_analytics.cjs`; `git diff --check`.
 - **Live checks:** see `tests/build-2-verification.md`. Paid calls need a configured key, internet, and credits. Use only synthetic or explicitly permitted photos.
 - **Limits:** 6 MB request, 12 candidate previews, 3 references, 6 picks, 800 output tokens, one concurrent call, five seconds between calls, 20 calls per server start. Set a provider key spending limit too.
 

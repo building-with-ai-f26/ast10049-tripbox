@@ -60,7 +60,7 @@ For the public-style static demo without AI, run `python3 -m http.server 8000 --
 
 The implementation includes the local AI endpoint, response validation, consent, PostHog on both surfaces, PRD v2, and local setup instructions. See [verification and remaining tasks](tests/build-2-verification.md) and [the Build 2 checklist](journal/build-02-plan.md). Implementation does not by itself prove the real model succeeded or that dashboard events/replay were received.
 
-PostHog collects pageviews, masked click autocapture, `clicked_try_product`, and AI start/complete/failure events. Photo areas and input values are excluded from replay. The `phc_` project token in `docs/analytics.js` is public by design; the OpenRouter key is private. Dashboard verification requires signing into the matching US PostHog project.
+PostHog collects pageviews, masked click autocapture, `clicked_try_product`, and AI start/complete/failure events. Photo areas and input values are excluded from replay. The `phc_` project token in `docs/analytics.js` is public by design; the OpenRouter key is private. Pageviews, clicks, named launch/AI events, and masked replay playback were verified November 12. The private [Build 2 evidence dashboard](https://us.posthog.com/project/721209/dashboard/2344126) contains received test events. A dashboard screenshot is saved for submission; outside user evidence remains pending.
 
 ## Verification
 
@@ -68,6 +68,7 @@ PostHog collects pageviews, masked click autocapture, `clicked_try_product`, and
 python3 -m unittest discover -s tests -v
 node --check docs/prototype/ai.js
 node --check docs/analytics.js
+node tests/test_analytics.cjs
 git diff --check
 ```
 
