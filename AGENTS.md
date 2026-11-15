@@ -6,7 +6,7 @@
 - **Product:** Tripbox helps review trip photos and create editable sharing/keepsake drafts. PRD and build log: `docs/index.html`.
 - **Core workflow:** import photos → local or optional AI recommendations → review picks → assign purposes → build/export a draft plan.
 - **Stack:** static HTML/CSS/JavaScript, Python 3.10+ standard-library server, OpenRouter chat completions, IndexedDB style library, PostHog.
-- **Structure:** `docs/` is the GitHub Pages root; `docs/prototype/` is the app; `docs/analytics.js` configures public analytics; `server.py` runs only on the laptop; `tests/` holds verification.
+- **Structure:** `docs/` is the GitHub Pages root; `docs/prototype/` is the app; `docs/analytics.js` configures public analytics; `docs/prototype/cards.js` renders cards and exports PNGs; `server.py` runs only on the laptop; `tests/` holds verification.
 - **AI:** `docs/prototype/ai.js` sends at most 12 JPEG previews and 3 references after consent. `server.py` keeps the key private, validates requests/results, and returns picks/usage. Never send originals, filenames, or photo content to analytics.
 - **Publishing:** GitHub Pages serves `main` → `/docs`. It cannot execute `server.py`; public AI remains disabled. Edit source inside `docs/prototype/`.
 
@@ -15,9 +15,16 @@
 - **Setup:** copy `.env.example` to `.env` only if `.env` does not already exist. Add `OPENROUTER_API_KEY` locally; never overwrite an existing secret. Default model: `nvidia/nemotron-3.5-super-vl:free`.
 - **Run AI app:** `python3 server.py`, then open `http://127.0.0.1:8000/prototype/`. Restart after changing `.env`; Ctrl+C stops it. `PORT` changes the port.
 - **Static demo only:** `python3 -m http.server 8000 --bind 127.0.0.1 --directory docs` (no AI endpoint).
-- **Tests:** `python3 -m unittest discover -s tests -v`; `node --check docs/prototype/ai.js`; `node --check docs/prototype/app.js`; `node --check docs/analytics.js`; `node tests/test_analytics.cjs`; `git diff --check`.
+- **Tests:** `python3 -m unittest discover -s tests -v`; `node --check docs/prototype/ai.js`; `node --check docs/prototype/app.js`; `node --check docs/analytics.js`; `node tests/test_analytics.cjs`; `node tests/test_cards.cjs`; `git diff --check`.
 - **Live checks:** see `tests/build-2-verification.md`. Paid calls need a configured key, internet, and credits. Use only synthetic or explicitly permitted photos.
 - **Limits:** 6 MB request, 12 candidate previews, 3 references, 6 picks, 800 output tokens, one concurrent call, five seconds between calls, 20 calls per server start. Set a provider key spending limit too.
+
+## Card studio
+- Choose among kept, non-skipped photos. Card previews/export use original local photos, never a provider upload.
+- PNGs have flattened text; no bleed/postcard back is generated. Respect full composition; do not crop originals.
+- Canva and Shutterfly links are manual handoffs, not account connections. Do not label them “connected” without implementing OAuth/verified provider integration.
+- Card UI is `ph-no-capture`; the explicit `card_exported` event includes only the card-type enum.
+- Card state is in the tab; no persistence is promised. Never send headings/messages/filenames to analytics.
 
 ## 3. Non-Negotiable Engineering Rules
 1. **Plan before coding:** Before touching multiple files, propose a brief plan and wait for approval.

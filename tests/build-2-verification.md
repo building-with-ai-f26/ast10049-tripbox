@@ -38,3 +38,11 @@ Created the private [Tripbox Build 2 Evidence dashboard](https://us.posthog.com/
 4. Product page and app were checked at 390px width with no horizontal overflow. Full 200% zoom, keyboard-only, and screen-reader testing remain pending. No complete accessibility claim is made.
 5. Commit history confirms meaningful pushes on November 11 and 12. Submit product page/repository URLs and the saved dashboard screenshot in Icerynk by November 16 at noon New York time.
 6. Bring the laptop running `python3 server.py` November 17.
+
+## November 15 card-studio extension
+
+`node tests/test_cards.cjs` passed: no-photo state; all three card dimensions; full photo composition; PNG download action; text copy; card-type-only analytics; and disabling export after the last keeper is removed. The same harness also passed with the bundled native canvas encoder, producing a real 1800 × 1200 PNG. The exported synthetic postcard was visually inspected and is shown on the product page.
+
+The card harness uses a simulated DOM; it is not browser verification. Local browser access was unavailable in this chat on November 15. Manual checks still needed: import/keep a photo, choose each card type, edit text, download/open the PNG, and confirm the provider link and manual upload in your own account. No real provider account connection or upload was tested or claimed.
+
+The existing 6 backend tests and analytics regression check passed after network permission was granted. Design detector findings remain the incumbent palette and review image with its source assigned only when the dialog opens. No new AI calls or print orders were made for this extension.

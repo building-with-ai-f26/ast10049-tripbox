@@ -213,13 +213,14 @@
       <p>
         Hundreds of trip photos, but nothing posted or printed? Tripbox helps
         turn camera-roll chaos into favorites for Instagram posts, Stories,
-        photo books, and frames. The goal is to learn your taste, sift through
+        photo books, frames, postcards, thank-you notes, and invitations. The goal is to learn your taste, sift through
         similar shots, and help you choose what to share and keep—without
         changing the original pictures.
       </p>
 
       <div class="cta-row">
         <a class="btn" href="prototype/" data-try-product>Try the prototype →</a>
+        <a class="btn btn-secondary" href="prototype/#card-studio">Make a postcard or invitation</a>
         <a class="btn btn-secondary" href="#prd">Read the Living PRD</a>
         <a class="btn btn-secondary" href="#build-log">Weekly Build Log</a>
       </div>
@@ -231,7 +232,7 @@
 
       <p>
         <strong>Current Status:</strong>
-        Build 2 in progress · November 12: public local-matching demo plus an OpenRouter-powered action in the local app.
+        Build 2 updated November 15: public local-matching demo plus an OpenRouter-powered action in the local app.
       </p>
 
       <p>
@@ -278,6 +279,13 @@
           Input values and text are masked; photo containers are blocked. The screenshot omits the visitor metadata panel.</figcaption>
       </figure>
 
+      <figure>
+        <img src="build-2-postcard-sample.png" loading="lazy" alt="Sample exported Tripbox postcard with a synthetic blue-and-yellow test image, Wish you were here heading, and a short message." />
+        <figcaption class="meta">November 15 card-studio extension: sample PNG rendered by the actual export code using a synthetic fixture.
+          This is an automated export example, not a browser screenshot or a real trip photo.
+          <a href="prototype/#card-studio">Make a postcard, thank-you note, or invitation</a>.</figcaption>
+      </figure>
+
       <p class="meta">
         <a href="prototype/">Open the interactive Tripbox prototype</a>
         and choose photos from your device to begin. The public demo uses local visual matching.
@@ -290,7 +298,7 @@
 
     <!-- LIVING PRD -->
     <section id="prd">
-      <h2>Living PRD v2 · Updated November 12, 2026</h2>
+      <h2>Living PRD v2 · Updated November 15, 2026</h2>
 
       <p class="meta">
         Current implementation and risk-test plan. External user testing and pod feedback have not yet been recorded.
@@ -334,7 +342,8 @@
           <strong>In Scope (Core Workflow):</strong>
           Add trip photos → provide style examples and preferences → review
           suggested picks and duplicates → revise selections → create
-          output drafts.
+          output drafts. Use a keeper in the card studio, customize its message, download the artwork,
+          and finish it in Canva or Shutterfly with a manual upload.
         </li>
 
         <li>
@@ -344,6 +353,14 @@
           orientation, and mat. A photo can appear in multiple groups.
         </li>
 
+        <li><strong>Cards and provider handoffs (November 15):</strong> create a 6 × 4 postcard,
+          7 × 5 thank-you note, or 5 × 7 invitation. Pick a kept photo, edit the heading/message,
+          preview without cropping, and download a PNG. Copy text for a provider template.
+          Canva templates and Shutterfly cards open in a new tab; upload is manual.</li>
+        <li><strong>Account connections:</strong> direct Canva OAuth linking is future work and requires a registered developer integration.
+          Shutterfly is a manual handoff; no direct account API has been implemented. Tripbox never places orders or sends invitations.
+          See <a href="https://www.canva.dev/docs/apps/rest-apis/authentication/">Canva authentication</a> and
+          <a href="https://support.shutterfly.com/s/article/uploading-photos-guide">Shutterfly upload guidance</a>.</li>
         <li>
           <strong>Out of Scope #1:</strong>
           Photo editing: no retouching, face or body changes, filters,
@@ -368,7 +385,9 @@
         with 200+ real phone photos is unmeasured. Personal, Creator, and
         Business users can supply examples manually; no live Instagram
         connection is configured. Drafts can be reordered and exported as a planning file, but trip sessions and finished print-ready books
-        are not saved. The style library can be saved separately to this browser’s IndexedDB.
+        are not saved. Card PNGs are flat artwork, not editable Canva projects or guaranteed printer-ready files;
+        bleed, postcard backs, addresses, and vendor-template checks remain in the chosen service. Card text clears on refresh.
+        The style library can be saved separately to this browser’s IndexedDB.
         AI evaluates a small batch, not an entire camera roll, and cannot identify who is in a photo.
       </p>
 
@@ -381,7 +400,8 @@
         The suggestions need to feel like my taste and save me time.
         A sharp photo is not necessarily my favorite expression or most
         meaningful memory. The current color, detail, orientation, and
-        like/skip signals cannot fully capture that.
+        like/skip signals cannot fully capture that. Amanda’s November 15 feedback: it works well, but photo selection
+        needs to understand her preferences better. This is qualitative builder feedback, not a measured user study.
       </p>
 
       <p>
@@ -398,6 +418,8 @@
         POST /api/recommend on the laptop’s Python server → OpenRouter /chat/completions
         with nvidia/nemotron-3.5-super-vl:free → validated photo IDs and explanations → editable Post picks → drafts.
         Local matching and approximate duplicate grouping remain available without an API call.
+        Card creation uses the kept original photo and a browser canvas; the PNG and copied text are downloaded locally.
+        Opening a provider link sends no photos or messages automatically. The new card studio also works on the public static demo.
       </p>
 
       <p class="meta">
@@ -413,11 +435,11 @@
       <div class="grid-2">
         <div class="stat-box">
           <div class="stat-label">Cumulative Build Spend</div>
-          <div class="stat-value">~$5.60 estimated</div>
+          <div class="stat-value">~$10.60 allocated</div>
           <p>
-            I pay $20/month for my OpenAI subscription. $5.60 is my rough
-            project-cost allocation, not measured token spending or an
-            additional API bill.
+            I pay $20/month for my coding subscription. Build 1 allocation: ~$5.60.
+            Build 2 allocation: ~$5 using a four-week month. With 5 hours/week, that is an estimated $1/hour allocation,
+            not a usage-based bill. Verified free-model requests reported $0 API cost. Subscription allocation is not additional spend.
           </p>
         </div>
 
@@ -529,10 +551,17 @@
             <a href="https://github.com/building-with-ai-f26/ast10049-tripbox/blob/main/tests/build-2-verification.md">Build 2 verification notes</a>.
             A real free-model browser call returned 2 editable picks (683 input / 49 output tokens, reported $0).
             Synthetic checks are not user research.</li>
-          <li><strong>Remaining before submission:</strong> real-trip taste/time comparison, actual builder hours/cost totals, pod feedback, and Icerynk submission.
+          <li><strong>Remaining before submission:</strong> measured real-trip taste/time comparison, pod feedback, learning practice, and Icerynk submission.
             PostHog dashboard screenshot and masked replay playback are verified. Bring the local app to class November 17.</li>
-          <li><strong>Cost &amp; time:</strong> this week’s actual spend and builder hours pending Amanda’s report.
-            Prior ~$5.60 subscription allocation is unchanged; it is not an API bill.</li>
+          <li><strong>Cost &amp; time (reported November 15):</strong> 5 builder hours.
+            $20/month subscription; estimated ~$5/week allocation using a four-week month (~$1/hour at 5 hours/week).
+            Verified free-model calls reported $0. No print order or paid design-service purchase was made.</li>
+          <li><strong>New in this build:</strong> card studio for postcards, thank-you notes, and invitations;
+            original-photo preview, downloadable PNG, copyable text, and manual Canva/Shutterfly handoffs.
+            Direct account linking is not configured. Card artwork has no bleed or mailing back; review the vendor template.</li>
+          <li><strong>Builder feedback:</strong> “works well” but needs better understanding of personal photo preferences.
+            Next test: compare prior favorites with AI picks and record replacements and review time.
+            Outside tester feedback and timing results are still pending.</li>
           <li><strong>Analytics follow-up:</strong> enabled project-level session recording, corrected the launch event to use the loaded SDK,
             and verified named clicks, pageviews, AI completions, and replay playback. Meaningful commits were pushed November 11 and 12.</li>
           <li><strong>Learn with AI:</strong> trace photo import → consent → local server → OpenRouter → validated picks.

@@ -34,3 +34,9 @@ Run `python3 server.py`; open http://127.0.0.1:8000/prototype/. Requires Python 
 6. Which data does PostHog collect, and which photo areas are blocked from replay?
 
 Amanda’s own answers and completed quiz practice are pending. Do not claim agent-written answers are builder learning evidence.
+
+## November 15 extension and builder report
+
+Card studio: keeper → browser canvas → PNG + copyable message → manual Canva/Shutterfly upload. No account OAuth or automatic upload is configured; a registered Canva integration is a prerequisite for future account linking. No orders or invitations are sent. Flat artwork needs vendor-template review.
+
+Amanda reports 5 builder hours and $20/month subscription. Estimated weekly allocation ~$5 (four-week month), about $1/hour at 5 hours/week. This is not a usage-based token bill. Verified free-model requests reported $0. Feedback: works well, but photo picks need better preference understanding. Next: compare prior favorites and review time on a real-trip batch; no outside or timed results claimed.

@@ -22,6 +22,18 @@ The public demo needs no account or API key and uses local visual matching. The 
 
 Trip photos and working selections stay in the current tab and clear on refresh. Style references persist in this browser only when you choose to save the library. A draft-plan download contains filenames and settings, not the photos themselves.
 
+## Make postcards, thank-you notes, and invitations
+
+1. Keep a photo in **Review picks**, then open **Make a card**.
+2. Choose Postcard (6 × 4), Thank-you note (7 × 5), or Invitation (5 × 7).
+3. Choose a kept photo and edit the heading/message. The preview preserves the whole photo.
+4. Download the PNG; use **Copy card text** for editable text in another service.
+5. Open the Canva template or Shutterfly cards link, sign in there, and upload manually.
+
+Exports are 1800 × 1200, 2100 × 1500, or 1500 × 2100 pixels respectively, matching the listed sizes at 300 pixels/inch. They contain flattened text and have no bleed or mailing back. Check resolution, margins, and vendor templates before ordering. To edit separate elements in a provider, upload the original photo and paste the copied text into its template instead. Card text clears on refresh; download before leaving.
+
+**No direct account connection is configured.** The links do not transmit photos, copy messages into provider accounts, order prints, or send invitations. Direct Canva OAuth requires a registered developer integration; Shutterfly currently uses manual upload. The card studio works on GitHub Pages as well as locally, with no additional model/API charge.
+
 ## What works today—and what is still a prototype
 
 The public demo uses local visual matching. The local app can also send up to 12 candidate previews and 3 style references to the free `nvidia/nemotron-3.5-super-vl:free` model through OpenRouter, after explicit preview-sharing permission. It returns up to 6 editable Post suggestions, keeps existing choices, and supports batch Undo. Free-provider availability and rate limits can prevent a response; there is no paid fallback. It supports photo import, style references, keep/skip review, similar-shot groups, and planning layouts. It does not connect to Instagram, recognize faces, publish posts, order prints, or produce finished print-ready books. Visitors use their own photos; projects are not shared between people or devices.
@@ -69,6 +81,7 @@ python3 -m unittest discover -s tests -v
 node --check docs/prototype/ai.js
 node --check docs/analytics.js
 node tests/test_analytics.cjs
+node tests/test_cards.cjs
 git diff --check
 ```
 
@@ -81,6 +94,7 @@ Tests reject oversized batches, remote image URLs, invalid IDs, and malformed AI
 | [`docs/index.html`](docs/index.html) | Public product page, living PRD, screenshots, and build log |
 | [`docs/prototype/`](docs/prototype/) | Runnable HTML, CSS, and JavaScript prototype |
 | [`server.py`](server.py) | Local-only OpenRouter backend; reads ignored `.env` |
+| [`docs/prototype/cards.js`](docs/prototype/cards.js) | Local card previews, PNG exports, and provider handoffs |
 | [`docs/prototype/ai.js`](docs/prototype/ai.js) | Consent, preview request, and editable AI picks |
 | [`docs/analytics.js`](docs/analytics.js) | Public PostHog configuration and replay masking |
 | [`docs/prototype/curation.js`](docs/prototype/curation.js) | Local photo matching and selection logic |
@@ -91,3 +105,7 @@ Tests reject oversized batches, remote image URLs, invalid IDs, and malformed AI
 | [`SPONSOR_MEMO.md`](SPONSOR_MEMO.md) | Course sponsor memo |
 
 Edit the prototype directly in `docs/prototype/` so future changes are included in the GitHub Pages deployment.
+
+## Build 2 builder report — November 15
+
+Amanda reported 5 hours and a $20/month coding subscription. Estimated allocation: ~$5/week using a four-week month (~$1/hour at 5 hours/week); this is not measured token spending. Verified free OpenRouter calls reported $0. Builder feedback: the workflow works well, but picks need to understand personal preferences better. Measured real-trip comparison, outside feedback, learning practice, and Icerynk submission remain pending.
