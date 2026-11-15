@@ -242,24 +242,21 @@
       </p>
 
       <figure>
-        <img
-          src="tripbox-prototype.png"
-          alt="Tripbox welcome screen showing the purple Tripbox title, memory navigation, trip name field, and local photo picker."
-        />
-        <figcaption class="meta">
-          Build 1: welcome screen and photo import with a collection of photos from my London July 2026 trip uploaded.
-        </figcaption>
+        <img src="tripbox-photo-import-style-library.png"
+          alt="Amanda’s November 15 Tripbox demo with London July 2026 named, 193 photos imported, and personal style references visible." />
+        <figcaption class="meta">Builder-provided screenshot, November 15: London July 2026 collection with 193 imported photos and a populated style-reference library.</figcaption>
       </figure>
 
       <figure>
-        <img
-          src="tripbox-preferences.png"
-          alt="Tripbox preferences screen showing Instagram account type, example photo selection, color mood, and quantity options for posts, Stories, photo books, and frames."
-          loading="lazy"
-        />
-        <figcaption class="meta">
-          Build 1: Tripbox suggesting photo picks after photos are loaded.
-        </figcaption>
+        <img src="tripbox-output-preferences.png" loading="lazy"
+          alt="Tripbox output preferences for people priority, example-based color mood, Instagram posts, Stories, photo-book pages, and frames." />
+        <figcaption class="meta">Builder-provided screenshot, November 15: preferences for people, color mood, output quantities, and frame size before requesting suggested picks.</figcaption>
+      </figure>
+
+      <figure>
+        <img src="tripbox-london-photo-review.png" loading="lazy"
+          alt="London July 2026 photo-review gallery showing 193 imported photos, zero keepers so far, three possible duplicate groups, and Keep/Skip controls." />
+        <figcaption class="meta">Builder-provided screenshot, November 15: real trip photos ready for review. The screen shows 0 keepers and 3 possible duplicate groups involving 7 photos; it does not show completed AI recommendations.</figcaption>
       </figure>
 
       <figure>
@@ -334,6 +331,12 @@
         through OpenRouter for up to 6 editable Post suggestions. Learning a personal model
         and connecting directly to Instagram remain future work.
       </p>
+
+      <p><strong>How personalized selection works today:</strong> Tripbox can propose picks instead of requiring every photo to be chosen manually.
+        Local matching uses visual features, supplied style examples, subject tags, and current-project keeps/skips.
+        The optional AI action uses up to 12 non-skipped previews and 3 style references to suggest Post picks.
+        It does not train or improve a persistent preference model from your review history. Saved style references can be reused;
+        automatic learning from Keep/Skip choices across trips is future work.</p>
 
       <h3>2. Scope &amp; Explicit Non-Goals</h3>
 
