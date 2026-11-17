@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tripbox · Local prototype</title>
+<title>Tripbox · Your memories, beautifully gathered</title>
 <link rel="stylesheet" href="style.css">
 <script src="../analytics.js" defer></script>
 <script src="curation.js" defer></script>
@@ -10,16 +10,54 @@
 <script src="app.js" defer></script>
 <script src="ai.js" defer></script>
 <script src="cards.js" defer></script>
+<style>
+/* Keepsake styling lives with this prototype; workflow and photo handling are unchanged. */
+main{max-width:1320px}
+.masthead{min-height:96px}.wordmark{font-size:38px}.wordmark span{color:#654588}
+.app-nav{background:#f8f6f2}.app-nav a:first-child span{background:var(--accent);color:var(--paper);border-color:var(--accent)}
+.workspace-intro{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:44px;align-items:center;padding:48px 0 32px}
+.intro-copy h1{font-size:clamp(40px,4.8vw,64px);max-width:17ch;line-height:1.06;text-wrap:balance;margin-bottom:22px}
+.intro-copy h1 em{color:var(--accent);font-weight:400}
+.intro-copy>p{max-width:57ch;font-size:17px;line-height:1.65;margin-bottom:0}
+.memory-keepsake{position:relative;min-height:210px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:#eee7f5;border:1px solid #d4c6df;border-radius:12px;transform:rotate(3deg);padding:30px 22px 22px;margin:8px 8px 12px 0}
+.memory-keepsake:before{content:"";position:absolute;top:-10px;left:calc(50% - 36px);width:72px;height:23px;background:#e6dbbe;border:1px solid #d7cba9;transform:rotate(-7deg)}
+.memory-keepsake svg{width:44px;height:44px;color:var(--accent);margin-bottom:14px}
+.memory-keepsake strong{font-family:Georgia,serif;font-size:27px;line-height:1.12;font-weight:400;max-width:10ch}
+.memory-keepsake span{font-size:12px;color:#594468;margin-top:14px;letter-spacing:.025em}
+.memory-categories{display:flex;flex-wrap:wrap;gap:10px 24px;margin-top:23px;color:var(--accent);font-size:13px;font-weight:600}
+.memory-categories span{display:inline-flex;gap:8px;align-items:center}.memory-categories svg{width:17px;height:17px;stroke-width:1.5;flex-shrink:0}
+.privacy-note{padding:15px 0 24px;border-top:1px solid var(--line);max-width:none}
+.setup-layout section{padding:28px}.setup-layout .taste{background:#eee7f5}
+.setup-layout h2{font-family:Georgia,serif;font-size:29px;font-weight:400;letter-spacing:-.025em}
+#files{padding:24px 16px;margin-bottom:16px;background:#f8f5fb}input[type=file]::file-selector-button{min-height:44px;background:#e7ddf0}
+#name::placeholder{color:#76697e;opacity:1}
+button{transition:background-color .18s ease-out,border-color .18s ease-out}button.primary{background:#654588;border-color:#654588}.primary:hover{background:#50336f}
+#empty{background:#eee7f5;padding:42px 24px;text-align:left;border-radius:12px;color:#594468}
+#empty strong{display:block;font-family:Georgia,serif;font-size:27px;line-height:1.2;font-weight:400;color:var(--ink);margin-bottom:10px}
+footer .footer-memory{display:block;font-family:Georgia,serif;font-size:26px;line-height:1.25;color:var(--accent);margin-bottom:14px}
+input,textarea{caret-color:var(--accent)}*{scrollbar-color:#bba9cb #f8f6f2}
+@media(max-width:900px){.workspace-intro{grid-template-columns:minmax(0,1fr) 200px;gap:28px}.memory-keepsake{padding:26px 16px}.memory-keepsake strong{font-size:25px}}
+@media(max-width:560px){.masthead{min-height:76px}.wordmark{font-size:30px}.workspace-intro{grid-template-columns:1fr;gap:26px;padding:32px 0 28px}.intro-copy h1{font-size:42px;max-width:16ch}.intro-copy>p{font-size:16px}.memory-categories{gap:10px 18px;margin-top:20px}.memory-keepsake{min-height:0;display:grid;grid-template-columns:36px 1fr;column-gap:15px;text-align:left;transform:rotate(-1deg);margin:0 3px;padding:22px}.memory-keepsake:before{left:auto;right:22px;width:54px;height:18px;top:-8px}.memory-keepsake svg{grid-row:1/3;width:34px;height:34px;margin:0}.memory-keepsake strong{max-width:none;font-size:23px}.memory-keepsake span{margin-top:7px;font-size:12px}.setup-layout section{padding:22px 18px}.setup-layout h2{font-size:27px}#files{padding:20px 12px}.privacy-note{font-size:12px;padding-top:16px}}
+@media(prefers-reduced-motion:reduce){button{transition:none}}
+</style>
 </head>
 <body>
 <main>
 <header class="masthead"><a class="wordmark" href="#start">Tripbox<span aria-hidden="true">.</span></a><span class="local-badge">Originals stay on your device</span><button id="new-project" type="button">New project</button></header>
 <nav class="app-nav" aria-label="Your workflow"><a href="#start"><span>1</span> Your photos</a><a href="#gallery"><span>2</span> Review picks</a><a href="#drafts-section"><span>3</span> Create drafts</a><a href="#card-studio">Make a card</a><a href="#taste" class="library-link">My style library</a></nav>
-<div class="workspace-intro"><h1>A trip worth keeping.</h1><p>Start with your photos. Make room for the people, places, and little moments you love.</p></div>
+<div class="workspace-intro">
+<div class="intro-copy"><h1>Camera-roll chaos,<br>meet your <em>happy place.</em></h1><p>The big adventures. The once-in-a-lifetime celebrations. The beautifully ordinary days. Gather the memories you captured, so life’s greatest moments don’t slip through the cracks of your camera roll.</p>
+<div class="memory-categories" aria-label="Made for all your memories">
+<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="m3 19 6-14 5 10 3-6 4 10H3Z"/><path d="m7 10 2 2 2-2"/></svg>Trips &amp; adventures</span>
+<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5L12 3Z"/></svg>Life’s big events</span>
+<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M20 5c-2-2-5-1-8 2-3-3-6-4-8-2s-2 5 1 8l7 7 7-7c3-3 3-6 1-8Z"/></svg>Everyday magic</span>
+</div></div>
+<aside class="memory-keepsake" aria-label="A little reminder"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="7" y="13" width="34" height="26" rx="4"/><path d="m16 13 3-5h10l3 5"/><circle cx="24" cy="26" r="8"/><path d="M34 19h3"/></svg><strong>Good times.<br>Great keepers.</strong><span>A little less scroll. A lot more soul.</span></aside>
+</div>
 <aside class="privacy-note">Local matching keeps trip photos in this tab. The optional local AI action sends previews to OpenRouter and its model provider only with your permission. Save your style library below to reuse those references next time. Originals are never changed.</aside>
 <p class="privacy-note">This prototype uses PostHog for pageviews, clicks, and masked session replay. Photo areas and input values are excluded from replay.</p>
 <div class="setup-layout">
-<section aria-labelledby="start"><h2 id="start">Your photos</h2><label for="name">Trip or collection name</label><input id="name" maxlength="100" placeholder="e.g. A weekend by the sea"><label for="files">Add photos from this trip</label><input id="files" type="file" accept="image/*" multiple><p>Bring the whole trip. We’ll help you narrow it down, one moment at a time.</p>
+<section aria-labelledby="start"><h2 id="start">Your photos</h2><label for="name">Trip, event, or collection name</label><input id="name" maxlength="100" placeholder="e.g. Summer in Sicily, our wedding, little joys"><label for="files">Add photos from your trip or event</label><input id="files" type="file" accept="image/*" multiple><p>Bring the adventure, the party, the in-between moments. We’ll help you find the keepers, one memory at a time.</p>
 <details class="import-help"><summary>Bringing photos from your phone?</summary><p class="phone-tip">On your phone, tap the picker and choose multiple photos from your library. On a Mac? AirDrop photos from your phone first, then choose them here. The app must be opened on your phone to use its photo library.</p></details>
 <p>JPG, PNG, and other images your browser can read are welcome. Some HEIC phone photos need conversion to JPG first. Import uses small previews; your originals stay untouched.</p>
 <progress id="progress" value="0" max="1" hidden aria-label="Photo import progress"></progress><p id="import-status" role="status"></p></section>
@@ -76,7 +114,7 @@
 <button id="ai-suggest" type="button" disabled>Ask AI for Post picks</button>
 <p id="ai-status" role="status">Checking local AI server…</p></div>
 </section>
-<section id="gallery"><div class="section-heading"><div><h2>Review your picks</h2><p>Keep what matters. Skip the rest. Tag yourself to make Instagram picks more personal.</p></div><button id="start-review" type="button">Review one at a time</button></div><h3 id="collection-name">My memory pile</h3><div class="toolbar"><button id="all" aria-pressed="true">All photos</button><button id="shortlist" aria-pressed="false">Keepers</button><button id="unreviewed" aria-pressed="false">Unreviewed</button><button id="skipped" aria-pressed="false">Skipped</button><label class="filter-label" for="subject-filter">Show<select id="subject-filter"><option value="all">All subjects</option><option value="me">Me</option><option value="people">Other people</option><option value="scenery">Scenery</option><option value="unknown">Not tagged</option></select></label><strong id="count" aria-live="polite">0 keepers · 0 photos</strong></div><div class="review-tools"><button id="duplicates" type="button">Compare similar shots</button><button id="undo-choice" type="button" disabled>Undo last choice</button><p id="duplicate-status">Add photos to compare similar shots.</p></div><p id="message" role="status"></p><p id="empty">Your collection is empty. Choose local JPG or PNG photos above to begin.</p><div class="ph-no-capture" id="grid" class="grid"></div><button id="more" type="button" hidden>Show more memories ↓</button></section>
+<section id="gallery"><div class="section-heading"><div><h2>Review your picks</h2><p>Keep what matters. Skip the rest. Tag yourself to make Instagram picks more personal.</p></div><button id="start-review" type="button">Review one at a time</button></div><h3 id="collection-name">My memory pile</h3><div class="toolbar"><button id="all" aria-pressed="true">All photos</button><button id="shortlist" aria-pressed="false">Keepers</button><button id="unreviewed" aria-pressed="false">Unreviewed</button><button id="skipped" aria-pressed="false">Skipped</button><label class="filter-label" for="subject-filter">Show<select id="subject-filter"><option value="all">All subjects</option><option value="me">Me</option><option value="people">Other people</option><option value="scenery">Scenery</option><option value="unknown">Not tagged</option></select></label><strong id="count" aria-live="polite">0 keepers · 0 photos</strong></div><div class="review-tools"><button id="duplicates" type="button">Compare similar shots</button><button id="undo-choice" type="button" disabled>Undo last choice</button><p id="duplicate-status">Add photos to compare similar shots.</p></div><p id="message" role="status"></p><p id="empty"><strong>Your next “remember when” starts here.</strong>Add photos above to start gathering your favorite faces, faraway places, and moments worth coming back to.</p><div class="ph-no-capture" id="grid" class="grid"></div><button id="more" type="button" hidden>Show more memories ↓</button></section>
 <section id="groups" class="groups-section"><h2>Your groups</h2><p>Your current labels appear here immediately. One favorite can belong to several groups. Return to All photos to revise your picks. View or download the untouched originals from photo cards. Build drafts below; nothing is posted or purchased.</p><div class="ph-no-capture" id="albums"></div></section>
 <section id="drafts-section"><h2>Create your drafts</h2><p>Your labels become carousel, Story, photo-book page, and frame drafts. Change counts above, then rebuild. Drafts keep every image’s full composition: no automatic crops. Move photos earlier or later to change their order.</p><button id="build-drafts" type="button" class="primary">Create / rebuild my drafts</button><button id="export-plan" type="button">Save draft plan (.json)</button><p id="draft-status" role="status"></p><div class="ph-no-capture" id="drafts"></div><p>These are local planning layouts, not finished print-ready books or published posts. Download originals separately. Trip projects clear on refresh. Your style library stays only if you save it above; draft plan files contain filenames and settings, not photos.</p></section>
 <section id="card-studio" class="ph-no-capture" aria-labelledby="card-studio-title">
@@ -102,6 +140,6 @@
 <p class="helper">Use K to keep, S to skip, U to undo, or arrow keys to move. Escape closes review.</p>
 </dialog>
 <dialog id="new-project-dialog" aria-labelledby="new-project-title"><h2 id="new-project-title">Start a new project?</h2><p>This clears this trip’s photos, picks, and drafts. Your style references stay available. Download any draft plan you want to keep first.</p><form method="dialog"><button>Keep working</button><button id="confirm-new-project" type="button" class="primary">Start new project</button></form></dialog>
-<footer>Made for memories · Local visual matching · No live Instagram connection, automatic posting, or print ordering. Optional AI recommendations require the local server.</footer>
+<footer><span class="footer-memory">For the moments you’ll want to live twice.</span>Made for memories · Local visual matching · No live Instagram connection, automatic posting, or print ordering. Optional AI recommendations require the local server.</footer>
 </main>
 </body></html>
