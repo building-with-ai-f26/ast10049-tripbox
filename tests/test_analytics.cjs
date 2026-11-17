@@ -19,7 +19,9 @@ listeners.click({target: {closest: () => ({})}});
 assert.deepEqual(captured, ['clicked_try_product']);
 listeners.click({target: {closest: () => null}});
 assert.equal(captured.length, 1);
-const callbackContext = {URL, window: {location: {href: 'https://example.com/prototype/?code=secret'}}, document: {}};
-vm.runInNewContext(fs.readFileSync('docs/analytics.js', 'utf8'), callbackContext);
-assert.equal(callbackContext.window.posthog, undefined, 'OAuth callback URLs must not reach analytics');
+for (const suffix of ['?code=secret', '?error=access_denied', '#access_token=secret', '#error_description=denied']) {
+  const callbackContext = {URL, window: {location: {href: 'https://example.com/prototype/' + suffix}}, document: {}};
+  vm.runInNewContext(fs.readFileSync('docs/analytics.js', 'utf8'), callbackContext);
+  assert.equal(callbackContext.window.posthog, undefined, 'OAuth callback URLs must not reach analytics');
+}
 console.log('Analytics SDK replacement and masking checks passed.');
