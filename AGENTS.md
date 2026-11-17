@@ -33,3 +33,18 @@
 4. **Verify changes:** Run relevant checks. For a reproducible logic bug, use a failing test to demonstrate the fix when practical. Record manual checks and known limitations; follow the selected Build 4 evaluation track.
 5. **Zero secrets in code:** Never hardcode API keys, tokens, or credentials. Always read from environment variables (`.env`) and update `.env.example` when new variables are needed.
 6. **Stop when looping:** If a fix fails twice in a row, stop, summarize what failed, and ask the human before trying a third approach.
+
+## Shipping
+1. Work from the course repository and edit the app in `docs/prototype/`.
+2. Use a focused branch for changes; run the applicable checks listed above and record any checks that could not run.
+3. Review the changes, push them to GitHub, and confirm the intended commit reaches the published site.
+4. Open the live URL and check the changed workflow. Report what was actually verified and what remains untested.
+
+## Ask Amanda first
+- Changes that delete or overwrite user data or production databases.
+- New credentials, changes to access or permissions, or actions that expose personal data.
+- Purchases or changes that create a paid service or recurring cost.
+- Publishing or ordering anything on someone's behalf.
+
+## Rule from a real mistake
+TripBox's local `~/tripbox/prototype/` and course GitHub Pages files diverged. Treat `building-with-ai-f26/ast10049-tripbox` and `docs/prototype/` as the source for the published app. Before editing, check the repository and current revision; after shipping, verify the live URL. Never overwrite newer features with an older local copy.
