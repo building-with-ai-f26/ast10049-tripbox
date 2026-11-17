@@ -6,10 +6,10 @@ TripBox is a GitHub Pages prototype that processes photos in the browser. Its op
 ## What I checked
 - On November 17, 2026, searched the local working copy's `docs/` and `server.py` text source for common secret-key markers, including Supabase secret and service-role keys. This narrow pattern search returned no matches; it is not a full secret or history scan.
 - Reviewed the local AI server's request validation and local-only host/origin restrictions. Its in-memory request limit is not a sufficient public deployment control.
-- Ran the JavaScript account UI, analytics and card tests. Account authentication was mocked; an OAuth callback-code suppression check passed. Three server validation tests passed; three server HTTP tests could not run because this environment denied local socket binding.
+- Ran the JavaScript account UI, analytics and card tests. Account authentication was mocked; an OAuth callback-code suppression check passed. All six server tests passed, including loopback HTTP tests for rejected cross-origin requests and request limits; the provider response in that test was mocked.
 
 ## What I found and fixed
-- The proposed Google sign-in flow could put an OAuth code in the callback URL while analytics starts. The branch suppresses analytics on callback URLs; this needs a real browser privacy review before release.
+- The proposed Google sign-in flow could put an OAuth code in the callback URL while analytics starts. The branch suppresses analytics on callback URLs including authorization codes and error details; this needs a real browser privacy review before release.
 - The real photo workflow and sign-in have not been verified end-to-end on the branch. No actual OAuth or third-party user test is claimed.
 
 ## What is left
