@@ -2,7 +2,7 @@
 (() => {
   const signin = document.getElementById('account-signin');
   const signout = document.getElementById('account-signout');
-  const status = document.getElementById('account-status');
+  const status = document.getElementById('tripbox-auth-status');
   const tell = message => { status.textContent = message; };
   if (!window.supabase || !window.isSecureContext) {
     tell('Sign-in is unavailable here. Open Tripbox over HTTPS and check your connection.');

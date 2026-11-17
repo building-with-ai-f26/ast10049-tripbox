@@ -2,7 +2,10 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
-const elements = Object.fromEntries(['account-signin', 'account-signout', 'account-status'].map(id => [id, { hidden: false, disabled: false, textContent: '', addEventListener(event, fn) { this[event] = fn; } }]));
+const html = fs.readFileSync('docs/prototype/index.html', 'utf8');
+assert.equal((html.match(/id="tripbox-auth-status"/g) || []).length, 1, 'account status must have a unique ID');
+assert.equal((html.match(/id="account-status"/g) || []).length, 1, 'Instagram status must retain its own ID');
+const elements = Object.fromEntries(['account-signin', 'account-signout', 'tripbox-auth-status'].map(id => [id, { hidden: false, disabled: false, textContent: '', addEventListener(event, fn) { this[event] = fn; } }]));
 let authListener, signedOut = false, oauth = false;
 const client = {auth: {
   onAuthStateChange(fn) { authListener = fn; },
