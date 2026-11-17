@@ -13,7 +13,7 @@ TripBox is a GitHub Pages prototype that processes photos in the browser. Its op
 - The real photo workflow and sign-in have not been verified end-to-end on the branch. No actual OAuth or third-party user test is claimed.
 
 ## What is left
-- Review the complete published assets, repository history, dependencies and exposure of secrets. Verify security of any deployed provider configuration and spending controls.
+- Review the complete published assets, repository history, dependencies and exposure of secrets. The proposed sign-in branch pins its Supabase JavaScript dependency to 2.119.0 and includes a SHA-384 integrity check; verify the delivered script in a browser before release. Verify security of any deployed provider configuration and spending controls.
 - Before storing user data, create necessary tables with RLS and restrictive grants; prove unauthenticated and second-user access is denied, and capture evidence.
 - If deploying an AI endpoint, design and verify abuse prevention, safe host/origin handling, rate limits across restarts, request-size limits and provider spending caps.
 - Verify OAuth, redirect handling, sign-out, analytics and session replay in a real browser and on a phone. Complete an adversarial review and document all findings and fixes.
