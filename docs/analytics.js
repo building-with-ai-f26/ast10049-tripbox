@@ -2,7 +2,7 @@
 (() => {
   // OAuth callback URLs can contain one-time codes; never send them to analytics.
   const url = new URL(window.location.href);
-  if (url.searchParams.has('code') || url.hash.includes('access_token=') || url.hash.includes('error=')) return;
+  if (['code', 'error', 'error_code', 'error_description'].some(key => url.searchParams.has(key)) || /(?:access_token|refresh_token|error|error_description)=/.test(url.hash)) return;
   const ph = window.posthog = window.posthog || [];
   if (ph.__SV) return;
   ph._i = [];
