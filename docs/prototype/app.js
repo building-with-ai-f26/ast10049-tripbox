@@ -515,7 +515,7 @@ $('confirm-new-project').addEventListener('click', () => {
   $('analysis-status').textContent = 'New project ready. Your style library is still here.';
   $('duplicate-status').textContent = 'Add photos to compare similar shots.';
   $('subject-filter').value = 'all'; view = 'all'; visibleLimit = 40;
-  $('new-project-dialog').close(); render(); location.hash = '#start';
+  $('new-project-dialog').close(); render(); say(''); location.hash = '#start';
 });
 
 // Persist thumbnails and measurements, never the original trip collection.
