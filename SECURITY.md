@@ -14,7 +14,7 @@ TripBox is a GitHub Pages prototype that processes photos in the browser. Its op
 - The proposed Google sign-in flow could put an OAuth code in the callback URL while analytics starts. The app suppresses analytics on callback URLs including authorization codes and error details; this still needs a real browser privacy review.
 - The real photo workflow and third-party user testing have not been verified end-to-end. Google sign-in was verified on the live site; Amanda reported that sign-out also works.
 
-## Phone and cross-device check
+- A repeat read-only anonymous HTTP request on November 18, using the publishable key without a user session, returned HTTP 401 and PostgreSQL permission-denied code 42501 for the style-library table. The actual response was saved locally as submission evidence; it does not replace a two-session adversarial API test.\n- A current redesigned dashboard replay showed masked text and an account area hidden from recording. A replay of populated photo-review and typed-input areas remains to be checked.\n\n## Phone and cross-device check
 - Amanda reported that she signed in on her phone, saved style carried over to her computer, and she added and reviewed a photo on the phone. This is a builder-reported functional check, not a direct adversarial API test or a full phone security review.
 
 ## What is left
