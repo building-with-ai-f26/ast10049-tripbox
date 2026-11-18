@@ -1,4 +1,4 @@
--- Proposed account-backed style library. Do not apply before security review.
+-- Account-backed style library. Applied to the intended TripBox project on November 18.
 -- References are small, user-provided previews; original trip photos are not stored.
 begin;
 create table public.tripbox_style_libraries (
