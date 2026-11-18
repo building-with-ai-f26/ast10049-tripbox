@@ -12,6 +12,10 @@ let referenceLimit = 24;
 let removedReferences = [];
 let libraryQueue = Promise.resolve();
 let libraryReady = false;
+let librarySession = null;
+let libraryRevision = 0;
+let libraryGeneration = 0;
+let librarySyncFailed = false;
 let reviewIds = [];
 let reviewIndex = 0;
 const choiceHistory = [];
@@ -302,8 +306,8 @@ async function importExamples(event, fromFolder = false) {
     if (videos) notes.push(`${videos} video references skipped: still photos only; reel video content is not analyzed.`);
     if (rejected) notes.push(`${rejected} files could not be opened; try JPG or PNG.`);
     renderReferences();
-    if ($('save-references').checked) await persistLibrary();
-    notes.push('No Instagram account was accessed. Nothing was uploaded.');
+    await persistIfEnabled();
+    notes.push(librarySession ? 'No Instagram account was accessed. Style previews are saved to your account when syncing succeeds.' : 'No Instagram account was accessed. References stay in this tab.');
     $('example-status').textContent = notes.join(' ');
   } finally {
     examplesBusy = false; renderReferences(); controls.forEach(id => { $(id).disabled = false; });
@@ -521,6 +525,7 @@ function renderReferences() {
     const card = document.createElement('figure');
     const img = document.createElement('img'); img.src = reference.url; img.alt = reference.name; img.loading = 'lazy';
     const remove = textElement('button', 'Remove'); remove.setAttribute('aria-label', `Remove reference ${reference.name}`);
+    remove.disabled = !libraryReady || examplesBusy || librarySyncFailed;
     remove.addEventListener('click', async () => {
       const referenceIndex = referenceLibrary.indexOf(reference);
       removedReferences.forEach(p => URL.revokeObjectURL(p.url));
@@ -536,7 +541,7 @@ function renderReferences() {
   $('clear-references').disabled = !referenceLibrary.length || examplesBusy || !libraryReady;
   $('undo-reference').disabled = !removedReferences.length || examplesBusy || !libraryReady;
   $('backup-references').disabled = !referenceLibrary.length || examplesBusy || !libraryReady;
-  $('save-references').disabled = !libraryReady || examplesBusy;
+  $('import-browser-library').disabled = !libraryReady || examplesBusy || librarySyncFailed;
 }
 async function addReference(file, sourcePath, stableId) {
   const preview = await makePreview(file);
@@ -546,23 +551,57 @@ async function addReference(file, sourcePath, stableId) {
   styleExamples.push(preview.features);
 }
 function persistLibrary() {
-  const records = referenceLibrary.map(({ id, name, blob, features, width, height, digest, sourcePath }) => ({ id, name, blob, features, width, height, digest, sourcePath }));
-  const enabled = $('save-references').checked;
-  $('library-status').textContent = enabled ? 'Saving your style library…' : 'Removing the saved copy…';
-  const operation = libraryQueue.then(() => enabled ? ReferenceStore.save(records) : ReferenceStore.clear());
+  if (!librarySession) {
+    $('library-status').textContent = 'Sign in to save these references. Unsaved references clear when you refresh.';
+    return Promise.resolve();
+  }
+  const generation = libraryGeneration;
+  const session = librarySession;
+  const records = referenceLibrary.map(({ id, name, blob, features, width, height, digest }) => ({ id, name, blob, features, width, height, digest }));
+  $('library-status').textContent = 'Saving your style library…';
+  const operation = libraryQueue.then(async () => {
+    if (librarySyncFailed || generation !== libraryGeneration) throw new Error('Library session changed or needs recovery.');
+    const photos = await Promise.all(records.map(async ({ blob, ...record }) => ({
+      ...record,
+      data: await new Promise((resolve, reject) => {
+        const reader = new FileReader(); reader.onload = () => resolve(reader.result); reader.onerror = reject; reader.readAsDataURL(blob);
+      })
+    })));
+    if (generation !== libraryGeneration) throw new Error('Library session changed.');
+    const revision = await AccountLibrary.save(window.TripboxAccount.client, session, libraryRevision, { version: 1, photos });
+    if (generation === libraryGeneration) libraryRevision = revision;
+  });
   libraryQueue = operation.catch(() => {});
   return operation.then(() => {
-    $('library-status').textContent = enabled ? `${records.length} references saved on this browser for future projects. Clearing browser data removes them; download a backup to keep a copy.` : 'Not saved. References stay in this tab until you close or refresh it.';
+    if (generation === libraryGeneration) $('library-status').textContent = `${records.length} style references saved to your account.`;
   }).catch(() => {
-    $('library-status').textContent = 'Could not save changes to browser storage. An older saved copy may remain. Download a library backup; try serving Tripbox at a consistent localhost address or check browser storage settings.';
+    if (generation !== libraryGeneration) return;
+    librarySyncFailed = true;
+    $('library-status').textContent = 'Your changes could not be saved. Download a library backup before refreshing; your account library may have changed on another device.';
+    renderReferences();
   });
 }
 function persistIfEnabled() {
-  if ($('save-references').checked) return persistLibrary();
-  $('library-status').textContent = `${referenceLibrary.length} references in this tab only. Check “Keep my style library” to save them for future projects.`;
-  return Promise.resolve();
+  return persistLibrary();
 }
-$('save-references').addEventListener('change', persistLibrary);
+window.TripboxPrepareSignout = async () => {
+  libraryReady = false;
+  ['examples','instagram-json','instagram-folder'].forEach(id => { $(id).disabled = true; });
+  renderReferences();
+  await libraryQueue;
+  if (librarySyncFailed || examplesBusy) {
+    libraryReady = true;
+    ['examples','instagram-json','instagram-folder'].forEach(id => { $(id).disabled = librarySyncFailed; });
+    renderReferences();
+    return false;
+  }
+  return true;
+};
+window.addEventListener('tripbox-signout-failed', () => {
+  libraryReady = true;
+  ['examples','instagram-json','instagram-folder'].forEach(id => { $(id).disabled = librarySyncFailed; });
+  renderReferences();
+});
 $('more-references').addEventListener('click', () => { referenceLimit += 24; renderReferences(); });
 $('clear-references').addEventListener('click', async () => {
   removedReferences.forEach(p => URL.revokeObjectURL(p.url));
@@ -594,27 +633,81 @@ $('backup-references').addEventListener('click', async () => {
   } catch { $('library-status').textContent = 'Backup could not be created. Your references are still here; try again.'; }
   finally { renderReferences(); }
 });
-async function loadReferenceLibrary() {
-  ['examples','instagram-json','instagram-folder','save-references'].forEach(id => { $(id).disabled = true; });
+let libraryUserId;
+async function loadReferenceLibrary(session) {
+  const userId = session?.user?.id || null;
+  if (libraryUserId === userId) { librarySession = session; return; }
+  libraryUserId = userId;
+  const generation = ++libraryGeneration;
+  librarySession = session;
+  libraryRevision = 0;
+  librarySyncFailed = false;
+  libraryReady = false;
+  libraryQueue = Promise.resolve();
+  ['examples','instagram-json','instagram-folder'].forEach(id => { $(id).disabled = true; });
+  for (const item of [...referenceLibrary, ...removedReferences]) URL.revokeObjectURL(item.url);
+  referenceLibrary.splice(0);
+  removedReferences = [];
+  importedInstagramPaths.clear(); instagramReferences.clear(); instagramFiles.clear();
+  $('import-browser-library').hidden = true;
+  renderReferences();
   try {
-    const saved = await ReferenceStore.load();
-    if (saved?.version === 1 && Array.isArray(saved.records)) {
-      for (const reference of saved.records) if (reference.blob instanceof Blob && reference.features?.color?.length === 3) {
-        referenceLibrary.push({ ...reference, url: URL.createObjectURL(reference.blob) });
-        if (reference.sourcePath) importedInstagramPaths.add(reference.sourcePath);
-      }
-      $('save-references').checked = true;
-      $('library-status').textContent = `${referenceLibrary.length} saved references loaded. New projects use this library automatically.`;
-      $('example-status').textContent = `${referenceLibrary.length} photo examples ready. Add more anytime.`;
+    if (!session) {
+      $('library-status').textContent = 'Sign in to save your style references to your account.';
+      return;
     }
-  } catch {
-    $('library-status').textContent = 'Browser storage is unavailable here. You can still use references in this tab and download a library backup. For reliable saving, use the same browser and localhost address.';
+    $('library-status').textContent = 'Loading your style library…';
+    const saved = await AccountLibrary.load(window.TripboxAccount.client, session);
+    if (generation !== libraryGeneration) return;
+    const records = saved.payload?.photos || [];
+    if (saved.payload && (saved.payload.version !== 1 || !Array.isArray(records))) throw new Error('Unsupported library format');
+    const loaded = [];
+    for (const record of records) {
+      if (typeof record.data !== 'string' || !/^data:image\/jpeg;base64,/.test(record.data) || record.features?.color?.length !== 3) throw new Error('Invalid saved reference');
+      const blob = await (await fetch(record.data)).blob();
+      loaded.push({ ...record, data: undefined, blob, url: URL.createObjectURL(blob) });
+    }
+    if (generation !== libraryGeneration) { loaded.forEach(item => URL.revokeObjectURL(item.url)); return; }
+    referenceLibrary.push(...loaded);
+    libraryRevision = saved.revision;
+    $('library-status').textContent = `${loaded.length} style references saved to your account.`;
+    try {
+      const local = await ReferenceStore.load();
+      if (generation === libraryGeneration && local?.version === 1 && local.records?.length) $('import-browser-library').hidden = false;
+    } catch (_) { /* Browser library is optional. */ }
+  } catch (_) {
+    if (generation !== libraryGeneration) return;
+    librarySyncFailed = true;
+    $('library-status').textContent = 'Could not load your account library. Check your connection and refresh before making changes.';
   } finally {
-    libraryReady = true;
-    ['examples','instagram-json','instagram-folder'].forEach(id => { $(id).disabled = false; });
-    renderReferences();
+    if (generation === libraryGeneration) {
+      libraryReady = true;
+      ['examples','instagram-json','instagram-folder'].forEach(id => { $(id).disabled = librarySyncFailed; });
+      renderReferences();
+    }
   }
 }
-loadReferenceLibrary();
+$('import-browser-library').addEventListener('click', async () => {
+  if (!librarySession || !libraryReady || librarySyncFailed) return;
+  const generation = libraryGeneration;
+  $('import-browser-library').disabled = true;
+  try {
+    const saved = await ReferenceStore.load();
+    if (generation !== libraryGeneration) return;
+    for (const reference of saved?.records || []) {
+      if (reference.blob instanceof Blob && reference.features?.color?.length === 3 && !referenceLibrary.some(item => item.id === reference.id)) {
+        referenceLibrary.push({ ...reference, url: URL.createObjectURL(reference.blob) });
+      }
+    }
+    renderReferences();
+    await persistLibrary();
+    if (!librarySyncFailed && generation === libraryGeneration) $('import-browser-library').hidden = true;
+  } catch (_) {
+    if (generation === libraryGeneration) $('library-status').textContent = 'Could not import your browser library. Your existing browser copy has not been removed.';
+  } finally { renderReferences(); }
+});
+window.addEventListener('tripbox-auth-change', event => loadReferenceLibrary(event.detail));
+loadReferenceLibrary(window.TripboxAccount?.session || null);
 
 render();
+
