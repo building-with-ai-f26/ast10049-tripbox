@@ -13,7 +13,7 @@
 <script src="account-library.js?v=20261118-1" defer></script>
 <script src="app.js?v=20261118-3" defer></script>
 <script src="ai.js" defer></script>
-<script src="cards.js" defer></script>
+<script src="cards.js?v=20261118-1" defer></script>
 <script src="workspace.js?v=20261118-1" defer></script>
 <style>
 /* Keepsake styling lives with this prototype; workflow and photo handling are unchanged. */
@@ -134,9 +134,9 @@ input,textarea{caret-color:var(--accent)}*{scrollbar-color:#bba9cb #f8f6f2}
 <section id="groups" class="groups-section"><h2>Your groups</h2><p>Your current labels appear here immediately. One favorite can belong to several groups. Return to All photos to revise your picks. View or download the untouched originals from photo cards. Build drafts below; nothing is posted or purchased.</p><div class="ph-no-capture" id="albums"></div></section>
 <section id="drafts-section"><h2>Create your drafts</h2><p>Your labels become carousel, Story, photo-book page, and frame drafts. <a href="#start">Change your quantities</a>, then rebuild. Drafts keep every image’s full composition: no automatic crops. Move photos earlier or later to change their order.</p><button id="build-drafts" type="button" class="primary">Create / rebuild my drafts</button><button id="export-plan" type="button">Save draft plan (.json)</button><p id="draft-status" role="status"></p><div class="ph-no-capture" id="drafts"></div><p>These are local planning layouts, not finished print-ready books or published posts. Download originals separately. Trip projects clear on refresh. Your signed-in style library saves separately; draft plan files contain filenames and settings, not photos.</p></section>
 <section id="card-studio" class="ph-no-capture" aria-labelledby="card-studio-title">
-<div class="section-heading"><div><h2 id="card-studio-title">A memory, ready to send.</h2><p>Make a postcard, thank-you note, or invitation from one of your keepers. Your card stays in this browser until you download or share it.</p></div></div>
+<div class="section-heading"><div><h2 id="card-studio-title">A memory, ready to send.</h2><p>Make a birthday card, postcard, thank-you note, or invitation from one of your keepers. Your card stays in this browser until you download or share it.</p></div></div>
 <div class="card-studio-layout"><div>
-<label for="card-type">What are you making?</label><select id="card-type"><option value="postcard">Postcard · 6 × 4</option><option value="thanks">Thank-you note · 7 × 5</option><option value="invitation">Invitation · 5 × 7</option></select>
+<label for="card-type">What are you making?</label><select id="card-type"><option value="postcard">Postcard · 6 × 4</option><option value="thanks">Thank-you note · 7 × 5</option><option value="invitation">Invitation · 5 × 7</option><option value="birthday">Birthday card · 5 × 7</option></select>
 <label for="card-photo">Choose a kept photo</label><select id="card-photo" disabled aria-describedby="card-empty"></select>
 <label for="card-heading">Heading</label><input id="card-heading" maxlength="64" value="Wish you were here">
 <label for="card-message">Message or event details</label><textarea id="card-message" rows="5" maxlength="300">A little memory from somewhere wonderful.</textarea>
