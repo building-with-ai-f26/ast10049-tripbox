@@ -29,7 +29,7 @@ const AccountLibrary = {
 class Reader {
   readAsDataURL(blob) { blob.arrayBuffer().then(bytes => { this.result = 'data:image/jpeg;base64,' + Buffer.from(bytes).toString('base64'); this.onload(); }); }
 }
-const sandbox = { $, console, Blob, URL, fetch, FileReader: Reader, AccountLibrary,
+const sandbox = { $, console, Blob, URL, fetch, setTimeout, FileReader: Reader, AccountLibrary,
   ReferenceStore: { async load() { return null; } },
   window: { TripboxAccount: { client: {} }, addEventListener() {} }
 };
