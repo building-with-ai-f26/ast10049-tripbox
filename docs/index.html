@@ -246,6 +246,10 @@
         <figcaption class="meta">November 18: the current live dashboard and organized workspace. The Birthday Workshop is planned.</figcaption>
       </figure>
       <figure>
+        <img src="build-3-saved-style.jpg" loading="lazy" alt="Amanda's current TripBox style library with saved photo references." />
+        <figcaption class="meta">November 18: Amanda’s own saved style references in the current signed-in workspace; screenshot supplied by the builder.</figcaption>
+      </figure>
+      <figure>
         <img src="build-3-birthday-card.jpg" loading="lazy" alt="Current Card Studio with the 5 by 7 birthday card option selected and editable greeting fields." />
         <figcaption class="meta">November 18: Card Studio with the birthday card option selected. Choose a kept photo to preview and download a draft; printing and sending are manual.</figcaption>
       </figure>
@@ -570,9 +574,9 @@
         <h3>Build 3 · Go Live &amp; Security Audit (Due Nov 23 at noon)</h3>
         <ul>
           <li><strong>Lane and current site:</strong> Beginner lane. The static prototype is live on GitHub Pages. Amanda reports signing in, adding and reviewing a photo on her phone, and seeing her saved style carry over to her computer. Outside-user testing remains to be recorded.</li>
-          <li><strong>Shipped November 18:</strong> A keepsake dashboard, workspace navigation and TripBox logo; Google sign-in with account-backed style references and selected style preferences. A synthetic reference survived reload and sign-out/sign-in in one account, and did not appear in the second account. The anonymous public-key request was denied; the SQL role-simulation test blocked cross-account reads and updates. Full accessibility, remaining phone workflows and current-design replay privacy checks remain. A 5 × 7 birthday-card draft was added to Card Studio; the full Birthday Workshop, birthday reminders and Story drafts remain future work. PostHog showed live-site pageviews and recordings, with text masked in the inspected replay; current-design photo masking and phone events need verification. The optional AI server remains local-only.</li>
+          <li><strong>Shipped November 18:</strong> A keepsake dashboard, workspace navigation and TripBox logo; Google sign-in with account-backed style references and selected style preferences. A synthetic reference survived reload and sign-out/sign-in in one account, and did not appear in the second account. The anonymous public-key request was denied; the SQL role-simulation test blocked cross-account reads and updates. Full accessibility, remaining phone workflows and current-design replay privacy checks remain. A 5 × 7 birthday-card draft was added to Card Studio; the full Birthday Workshop, birthday reminders and Story drafts remain future work. PostHog showed live-site pageviews and recordings, with text masked in the inspected replay; a current-design replay showed masked dashboard text and a hidden account area; photo-review and input masking and phone events still need verification. The optional AI server remains local-only.</li>
           <li><strong>Evidence so far:</strong> Server unit and loopback HTTP tests passed with a mocked provider; account-interface tests use mocked authentication. On November 18 a real Google sign-in returned successfully to the live app after fixing its redirect; Amanda also reported that sign-in and sign-out work. This does not prove third-party use.</li>
-          <li><strong>Still needed:</strong> Complete the security audit, save a screenshot of a refused security test, verify current-design replay privacy and phone events, record actual hours and spending, build and push on a second qualifying day, and submit.</li>
+          <li><strong>Still needed:</strong> Complete the security audit, save a screenshot of a refused security test, verify current-design replay privacy and phone events, confirm any other spending, build and push on a second qualifying day, and submit.</li>
           <li><strong>Cost &amp; time:</strong> Amanda reports about 5 hours this week and a $20/month subscription. Estimated Build 3 subscription allocation: $20 ÷ 4 = ~$5 for the week, or ~$1 per hour at 5 hours. This is a portion of the monthly subscription, not an additional charge; other Build 3 costs have not yet been verified.</li>
         </ul>
       </div>
