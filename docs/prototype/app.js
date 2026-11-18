@@ -706,7 +706,10 @@ $('import-browser-library').addEventListener('click', async () => {
     if (generation === libraryGeneration) $('library-status').textContent = 'Could not import your browser library. Your existing browser copy has not been removed.';
   } finally { renderReferences(); }
 });
-window.addEventListener('tripbox-auth-change', event => loadReferenceLibrary(event.detail));
+window.addEventListener('tripbox-auth-change', event => {
+  const session = event.detail;
+  setTimeout(() => loadReferenceLibrary(session), 0);
+});
 loadReferenceLibrary(window.TripboxAccount?.session || null);
 
 render();
