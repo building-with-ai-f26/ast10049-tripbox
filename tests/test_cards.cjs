@@ -51,7 +51,7 @@ const vm = require('node:vm');
   photos.push({id:1,name:'Synthetic fixture.png',selected:true,excluded:false,originalUrl:'local-test'});
   observers[0]();await settle();
   assert.equal(element('card-download').disabled,false);
-  for(const [type,width,height] of [['postcard',1800,1200],['thanks',2100,1500],['invitation',1500,2100]]) {
+  for(const [type,width,height] of [['postcard',1800,1200],['thanks',2100,1500],['invitation',1500,2100],['birthday',1500,2100]]) {
     element('card-type').value=type;element('card-type').listeners.change();await settle();
     const canvas=element('card-preview');assert.equal(canvas.width,width);assert.equal(canvas.height,height);
     assert.match(element('canva-handoff').href,/^https:\/\/www.canva.com\//);
@@ -61,9 +61,10 @@ const vm = require('node:vm');
     assert.equal(context.lastBlob.type,'image/png');
     if(native&&process.env.TRIPBOX_CARD_OUTPUT&&type==='postcard')fs.writeFileSync(process.env.TRIPBOX_CARD_OUTPUT,Buffer.from(await context.lastBlob.arrayBuffer()));
   }
-  await element('card-copy').listeners.click();assert.match(context.copied,/You are invited/);
-  assert.equal(events.length,3);assert.deepEqual(Object.keys(events[0][1]),['card_type']);
+  await element('card-copy').listeners.click();assert.match(context.copied,/Happy Birthday!/);
+  assert.equal(events.length,4);assert.deepEqual(Object.keys(events[0][1]),['card_type']);
   const image=drawing.find(row=>row[0]==='image');assert.equal(Math.round(image[3]/image[4]*100),150,'Photo composition must retain the original 3:2 ratio');
   photos[0].selected=false;observers[0]();await settle();assert.equal(element('card-download').disabled,true);assert.equal(element('card-preview').hidden,true);
-  console.log('Card studio: empty state, 3 formats, uncropped image, PNG download, text copy, analytics privacy, and selection reset passed'+(native?' with native PNG encoding.':'.'));
+  console.log('Card studio: empty state, 4 formats, uncropped image, PNG download, text copy, analytics privacy, and selection reset passed'+(native?' with native PNG encoding.':'.'));
 })();
+
