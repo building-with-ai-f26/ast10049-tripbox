@@ -4,7 +4,8 @@ const CardStudio = (() => {
   const formats = {
     postcard: {title: 'Postcard', width: 1800, height: 1200, inches: '6 × 4', heading: 'Wish you were here', message: 'A little memory from somewhere wonderful.', canva: 'https://www.canva.com/create/postcards/'},
     thanks: {title: 'Thank-you note', width: 2100, height: 1500, inches: '7 × 5', heading: 'Thank you', message: 'For being part of a memory I will always keep.', canva: 'https://www.canva.com/thank-you-cards/'},
-    invitation: {title: 'Invitation', width: 1500, height: 2100, inches: '5 × 7', heading: 'You are invited', message: 'Join us for a moment worth celebrating.\nAdd your date, time, place, and RSVP details.', canva: 'https://www.canva.com/create/cards/party-invitations/'}
+    invitation: {title: 'Invitation', width: 1500, height: 2100, inches: '5 × 7', heading: 'You are invited', message: 'Join us for a moment worth celebrating.\nAdd your date, time, place, and RSVP details.', canva: 'https://www.canva.com/create/cards/party-invitations/'},
+    birthday: {title: 'Birthday card', width: 1500, height: 2100, inches: '5 × 7', heading: 'Happy Birthday!', message: 'Celebrating you and the memories we share.', canva: 'https://www.canva.com/create/birthday-cards/'}
   };
   function wrap(ctx, text, maxWidth) {
     const lines = [];
@@ -124,3 +125,4 @@ const CardStudio = (() => {
   // Keep the initial placeholder even before the first selection exists.
   draw(); refreshPhotos();
 })();
+
