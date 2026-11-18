@@ -48,11 +48,16 @@ globalThis.bridge = { loadReferenceLibrary, persistLibrary,
   const { bridge } = sandbox;
   await bridge.loadReferenceLibrary({ user: { id: 'a' } });
   assert.deepEqual(Array.from(bridge.references()), ['a-photo']);
+  elements['people-priority'].value = 'balanced';
+  elements.colors.value = 'soft';
   await bridge.persistLibrary();
   assert.equal(accounts.a.revision, 2);
+  assert.equal(accounts.a.payload.preferences.people, 'balanced');
+  assert.equal(accounts.a.payload.preferences.colors, 'soft');
   activeUser = 'b';
   await bridge.loadReferenceLibrary({ user: { id: 'b' } });
   assert.deepEqual(Array.from(bridge.references()), [], 'switching accounts clears the previous user’s references');
+  assert.equal(elements['people-priority'].value, 'people', 'switching accounts clears the previous user’s preferences');
   const delayed = bridge.loadReferenceLibrary({ user: { id: 'slow' } });
   await bridge.loadReferenceLibrary({ user: { id: 'b' } });
   pendingA(accounts.a);
