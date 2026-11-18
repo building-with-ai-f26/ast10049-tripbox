@@ -345,8 +345,9 @@ $('analyze').addEventListener('click', () => {
     const total = favorites().filter(p => p.labels.has(purpose)).length;
     report.push(`${purpose}: ${total} / ${needs[purpose]} requested${total < needs[purpose] ? ' (fewer distinct eligible shots)' : total > needs[purpose] ? ' (manual labels exceed request)' : ''}`);
   }
-  $('analysis-status').textContent = `Picks refreshed. ${report.join(' · ')}. Your explicit keeps were preserved. Tag photos as Me or Other people to guide Instagram picks. Similarity is approximate.`;
-  view = 'shortlist'; visibleLimit = 40; render(); $('gallery').scrollIntoView({ behavior: 'smooth' });
+  const summary = `Picks refreshed. ${report.join(' · ')}. Your explicit keeps were preserved. Tag photos as Me or Other people to guide Instagram picks. Similarity is approximate.`;
+  $('analysis-status').textContent = summary;
+  view = 'shortlist'; visibleLimit = 40; render(); say(summary); location.hash = '#gallery';
 });
 function textElement(tag, text) { const el = document.createElement(tag); el.textContent = text; return el; }
 function buildPlan() {
@@ -514,7 +515,7 @@ $('confirm-new-project').addEventListener('click', () => {
   $('analysis-status').textContent = 'New project ready. Your style library is still here.';
   $('duplicate-status').textContent = 'Add photos to compare similar shots.';
   $('subject-filter').value = 'all'; view = 'all'; visibleLimit = 40;
-  $('new-project-dialog').close(); render(); $('start').scrollIntoView({ behavior: 'smooth' });
+  $('new-project-dialog').close(); render(); location.hash = '#start';
 });
 
 // Persist thumbnails and measurements, never the original trip collection.
