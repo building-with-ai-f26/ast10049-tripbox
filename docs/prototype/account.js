@@ -39,7 +39,7 @@
     signout.disabled = true;
     try {
       if (window.TripboxPrepareSignout && !await window.TripboxPrepareSignout()) {
-        tell('Your style library has unsaved changes. Download a backup before signing out.');
+        tell('Your style library has unsaved changes. Download a backup, then refresh before signing out.');
         return;
       }
       const { error } = await client.auth.signOut({ scope: 'local' });
