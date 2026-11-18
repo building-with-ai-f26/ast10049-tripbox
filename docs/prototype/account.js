@@ -28,7 +28,7 @@
     signin.disabled = true;
     tell('Opening Google sign-in…');
     try {
-      const { error } = await client.auth.signInWithOAuth({ provider: 'google' });
+      const { error } = await client.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: 'https://building-with-ai-f26.github.io/ast10049-tripbox/prototype/' } });
       if (error) throw error;
     } catch (_) { signin.disabled = false; tell('Sign-in could not start. Check your connection and try again.'); }
   });
