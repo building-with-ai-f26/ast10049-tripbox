@@ -14,12 +14,20 @@ TripBox is a GitHub Pages prototype that processes photos in the browser. Its op
 - The proposed Google sign-in flow could put an OAuth code in the callback URL while analytics starts. The app suppresses analytics on callback URLs including authorization codes and error details; this still needs a real browser privacy review.
 - The real photo workflow and third-party user testing have not been verified end-to-end. Google sign-in was verified on the live site; Amanda reported that sign-out also works.
 
-- A repeat read-only anonymous HTTP request on November 18, using the publishable key without a user session, returned HTTP 401 and PostgreSQL permission-denied code 42501 for the style-library table. The actual response was saved locally as submission evidence; it does not replace a two-session adversarial API test.\n- A current redesigned dashboard replay showed masked text and an account area hidden from recording. A replay of populated photo-review and typed-input areas remains to be checked.\n\n## Phone and cross-device check
+- A repeat read-only anonymous HTTP request on November 18, using the publishable key without a user session, returned HTTP 401 and PostgreSQL permission-denied code 42501 for the style-library table. The actual response was saved locally as submission evidence; it does not replace a two-session adversarial API test.
+- A current redesigned dashboard replay showed masked text and an account area hidden from recording. A replay of populated photo-review and typed-input areas remains to be checked.
+
+## November 18 follow-up
+- Reviewed the current repository’s Supabase migration: owner-only read, insert and update policies are defined, with no anonymous grant and an 8 MiB payload limit. This is a source review; the live settings and prior tests are described above.
+- Reviewed analytics settings: input and text masking and blocking for images, canvases and marked photo regions are configured. A synthetic image and a test phrase were used in the live app, but the corresponding populated review and input moments were not located in playback, so those protections are not yet confirmed in a live replay.
+- Re-ran account, card, workspace, and analytics checks against the local staged copy; these are automated checks, and the account test uses mocked authentication. They are not a full production security audit.
+
+## Phone and cross-device check
 - Amanda reported that she signed in on her phone, saved style carried over to her computer, and she added and reviewed a photo on the phone. This is a builder-reported functional check, not a direct adversarial API test or a full phone security review.
 
 ## What is left
 - Review the complete published assets, repository history, dependencies and exposure of secrets. The sign-in implementation pins its Supabase JavaScript dependency to 2.119.0 and includes a SHA-384 integrity check; verify the delivered script in a browser before release. Verify security of any deployed provider configuration and spending controls.
-- Test direct adversarial API requests with both signed-in sessions, verify existing-browser import, and save the required security-test screenshot.
+- Test direct adversarial API requests with both signed-in sessions and verify existing-browser import. Amanda saved a screenshot showing HTTP 401 and permission denied; its request context is in the local evidence file.
 - If deploying an AI endpoint, design and verify abuse prevention, safe host/origin handling, rate limits across restarts, request-size limits and provider spending caps.
 - Verify remaining photo workflows, phone analytics and current-design session replay masking; phone sign-out has not been separately verified. Complete an adversarial review and document all findings and fixes.
 - This document is an initial record, not a completed security audit.
