@@ -232,7 +232,7 @@
 
       <p>
         <strong>Current Status:</strong>
-        Build 2 updated November 15: public local-matching demo plus an OpenRouter-powered action in the local app.
+        Build 3: live keepsake dashboard, Google sign-in, and account-backed style references. The optional AI action still runs only in the local app.
       </p>
 
       <p>
@@ -288,8 +288,7 @@
         and choose photos from your device to begin. The public demo uses local visual matching.
         The real AI action runs through <code>python3 server.py</code> on the builder’s laptop;
         GitHub Pages does not run that backend. AI preview sharing requires an explicit checkbox.
-        Originals stay on the device. Trip selections clear on refresh; style references persist
-        in this browser only when saving is enabled.
+        Originals stay on the device. Trip selections clear on refresh; signed-in style-reference previews and selected style preferences save to the account. Existing browser-only libraries can be imported explicitly.
       </p>
     </section>
 
@@ -303,8 +302,8 @@
 
       <h3>Build 3: hosting and security choices</h3>
       <p>The beginner-lane product page and static prototype are served by GitHub Pages. Local visual matching works in the browser; the existing optional AI server is local-only. Render is being considered for a secured live AI service, but no public AI deployment has been verified.</p>
-      <p>A Supabase project and Google OAuth configuration support live Google sign-in. The builder confirmed sign-in and sign-out work; account-backed storage is not yet available. A style-library table with RLS and owner-only policies was created November 18; the app does not yet use it. When account data is introduced, each table must have restrictive row-level security and be tested against unauthenticated and another user's access before real data is stored.</p>
-      <p>Trip photos currently remain in the browser tab, and optional style-library storage remains on the same browser. Future cross-device storage, Instagram integration, birthday drafts and face recognition require separate implementation and privacy review. See <a href="https://github.com/building-with-ai-f26/ast10049-tripbox/blob/main/SECURITY.md">the security review in progress</a>.</p>
+      <p>A Supabase project and Google OAuth configuration support live Google sign-in. Google sign-in and account-backed style-library previews are live. The style-library table has RLS and owner-only policies; an anonymous public-key request was denied, a two-identity SQL test blocked cross-account access, and a synthetic reference saved in one live test account did not appear in the other.</p>
+      <p>Trip photos remain in the browser tab; signed-in users save small style-reference previews and selected style choices to their account. Existing browser references can be imported explicitly. Cross-device behavior still needs a phone check. Instagram integration, birthday drafts and face recognition require separate implementation and privacy review. See <a href="https://github.com/building-with-ai-f26/ast10049-tripbox/blob/main/SECURITY.md">the security review in progress</a>.</p>
       <p class="meta">This page and the prototype use PostHog for pageviews, clicks, and masked session replay.
         Photo areas and input values are excluded from replay. Analytics may be blocked by browser settings.</p>
       <h3>1. Target User &amp; The Job to Be Done</h3>
@@ -394,7 +393,7 @@
         connection is configured. Drafts can be reordered and exported as a planning file, but trip sessions and finished print-ready books
         are not saved. Card PNGs are flat artwork, not editable Canva projects or guaranteed printer-ready files;
         bleed, postcard backs, addresses, and vendor-template checks remain in the chosen service. Card text clears on refresh.
-        The style library can be saved separately to this browser’s IndexedDB.
+        Signed-in style-reference previews and selected style choices save to the account; original trip photos and draft sessions remain local.
         AI evaluates a small batch, not an entire camera roll, and cannot identify who is in a photo.
       </p>
 
@@ -433,7 +432,7 @@
         Built with HTML, CSS, and JavaScript. Small previews support browsing;
         original viewing and downloads use unchanged source files.
         The API key is read from ignored <code>.env</code> by <code>server.py</code> and never served to the browser.
-        The backend uses no database and binds only to 127.0.0.1. Opt-in style references use IndexedDB.
+        The backend uses no database and binds only to 127.0.0.1. Previously saved browser-only style references use IndexedDB and can be explicitly imported; signed-in style-reference previews use Supabase.
         AI results require human review; authorized Instagram analysis is future work.
       </p>
 
@@ -580,7 +579,7 @@
         <h3>Build 3 · Go Live &amp; Security Audit (Due Nov 23 at noon)</h3>
         <ul>
           <li><strong>Lane and current site:</strong> Beginner lane. The static prototype is live on GitHub Pages; real-phone and outside-user checks remain to be recorded.</li>
-          <li><strong>Work in progress:</strong> Account-backed style storage, account security, a written security audit and deployment review. On November 18 an account-library draft and mocked checks were committed, and a second Google test user was enabled. A dashboard and workspace-navigation redesign is also in draft; a local synthetic-photo check covered import, local suggestions, review, drafts and card preview. The table has been created; an anonymous public-key request was refused and a rollback-only SQL role simulation blocked cross-account read and update. The real two-session app test and redesigned deployment remain; the feature is not live. The local AI server is not yet a public AI service.</li>
+          <li><strong>Shipped November 18:</strong> A keepsake dashboard, workspace navigation and TripBox logo; Google sign-in with account-backed style references and selected style preferences. A synthetic reference survived reload and sign-out/sign-in in one account, and did not appear in the second account. The anonymous public-key request was denied; the SQL role-simulation test blocked cross-account reads and updates. Phone, full accessibility, cross-device and live analytics checks remain. Birthday Workshop is not built. The optional AI server remains local-only.</li>
           <li><strong>Evidence so far:</strong> Server unit and loopback HTTP tests passed with a mocked provider; account-interface tests use mocked authentication. On November 18 a real Google sign-in returned successfully to the live app after fixing its redirect; Amanda also reported that sign-in and sign-out work. This does not prove third-party use.</li>
           <li><strong>Still needed:</strong> Phone testing, RLS and cross-account testing when user data is added, live analytics verification, a security-test screenshot, and submission.</li>
           <li><strong>Cost &amp; time:</strong> Build 3 spending and hours have not yet been recorded.</li>
