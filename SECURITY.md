@@ -14,9 +14,12 @@ TripBox is a GitHub Pages prototype that processes photos in the browser. Its op
 - The proposed Google sign-in flow could put an OAuth code in the callback URL while analytics starts. The app suppresses analytics on callback URLs including authorization codes and error details; this still needs a real browser privacy review.
 - The real photo workflow and third-party user testing have not been verified end-to-end. Google sign-in was verified on the live site; Amanda reported that sign-out also works.
 
+## Phone and cross-device check
+- Amanda reported that she signed in on her phone, saved style carried over to her computer, and she added and reviewed a photo on the phone. This is a builder-reported functional check, not a direct adversarial API test or a full phone security review.
+
 ## What is left
 - Review the complete published assets, repository history, dependencies and exposure of secrets. The sign-in implementation pins its Supabase JavaScript dependency to 2.119.0 and includes a SHA-384 integrity check; verify the delivered script in a browser before release. Verify security of any deployed provider configuration and spending controls.
-- Test direct adversarial API requests with both signed-in sessions, verify cross-device and existing-browser import, and save the required security-test screenshot.
+- Test direct adversarial API requests with both signed-in sessions, verify existing-browser import, and save the required security-test screenshot.
 - If deploying an AI endpoint, design and verify abuse prevention, safe host/origin handling, rate limits across restarts, request-size limits and provider spending caps.
-- Verify the full photo workflow, analytics and session replay in a real browser and on a phone; verify sign-in and sign-out on a phone. Complete an adversarial review and document all findings and fixes.
+- Verify remaining photo workflows, phone analytics and current-design session replay masking; phone sign-out has not been separately verified. Complete an adversarial review and document all findings and fixes.
 - This document is an initial record, not a completed security audit.
