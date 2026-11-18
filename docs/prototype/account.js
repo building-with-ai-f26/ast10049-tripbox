@@ -13,11 +13,14 @@
     'sb_publishable_-2wXv8NgwbNgTdNAzmKT2g_DL46sXWo',
     { auth: { flowType: 'pkce', detectSessionInUrl: true } }
   );
+  window.TripboxAccount = { client, session: null };
   function show(session) {
+    window.TripboxAccount.session = session;
+    window.dispatchEvent(new CustomEvent('tripbox-auth-change', { detail: session }));
     signin.hidden = !!session;
     signout.hidden = !session;
     signin.disabled = false;
-    tell(session ? 'Signed in. Your photos and style references remain on this device.' : 'Sign in with your Google account.');
+    tell(session ? 'Signed in. Check your style-library status below.' : 'Sign in with your Google account.');
   }
   client.auth.onAuthStateChange((_event, session) => show(session));
   client.auth.getSession().then(({ data, error }) => {
@@ -35,10 +38,15 @@
   signout.addEventListener('click', async () => {
     signout.disabled = true;
     try {
+      if (window.TripboxPrepareSignout && !await window.TripboxPrepareSignout()) {
+        tell('Your style library has unsaved changes. Download a backup before signing out.');
+        return;
+      }
       const { error } = await client.auth.signOut({ scope: 'local' });
       if (error) throw error;
       show(null);
-    } catch (_) { tell('Could not sign out. Please try again.'); }
+    } catch (_) { window.dispatchEvent(new Event('tripbox-signout-failed')); tell('Could not sign out. Please try again.'); }
     finally { signout.disabled = false; }
   });
 })();
+
