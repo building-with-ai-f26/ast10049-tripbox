@@ -305,7 +305,7 @@
       <p>A Supabase project and Google OAuth configuration support live Google sign-in. Google sign-in and account-backed style-library previews are live. The style-library table has RLS and owner-only policies; an anonymous public-key request was denied, a two-identity SQL test blocked cross-account access, and a synthetic reference saved in one live test account did not appear in the other.</p>
       <p>Trip photos remain in the browser tab; signed-in users save small style-reference previews and selected style choices to their account. Existing browser references can be imported explicitly. Amanda reports that she signed in on her phone, her saved style carried over to her computer, and she added and reviewed a photo on her phone. An editable 5 × 7 birthday card draft is available in Card Studio; saved birthdays, birthday Story drafts, Instagram integration and face recognition remain future work. See <a href="https://github.com/building-with-ai-f26/ast10049-tripbox/blob/main/SECURITY.md">the security review in progress</a>.</p>
       <p class="meta">This page and the prototype use PostHog for pageviews, clicks, and masked session replay.
-        Photo areas and input values are excluded from replay. Analytics may be blocked by browser settings.</p>
+        Photo areas and input values are configured to be excluded from replay; this still needs verification in the current design. Analytics may be blocked by browser settings.</p>
       <h3>1. Target User &amp; The Job to Be Done</h3>
 
       <p>
