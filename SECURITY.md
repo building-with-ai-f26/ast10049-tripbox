@@ -1,12 +1,14 @@
 # Security audit — work in progress
 
 ## My kind of app
-TripBox is a GitHub Pages prototype that processes photos in the browser. Its optional AI server is local-only. Google sign-in is live; on November 18 a real Google sign-in returned to the deployed app, and Amanda reported sign-in and sign-out working. Account-backed preference, birthday and photo storage are not yet implemented.
+TripBox is a GitHub Pages prototype that processes photos in the browser. Its optional AI server is local-only. Google sign-in is live; on November 18 a real Google sign-in returned to the deployed app, and Amanda reported sign-in and sign-out working. An empty account-backed style-library table is provisioned, but the app integration is not yet deployed. Birthday storage is not implemented.
 
 ## What I checked
 - On November 17, 2026, searched the local working copy's `docs/` and `server.py` text source for common secret-key markers, including Supabase secret and service-role keys. This narrow pattern search returned no matches; it is not a full secret or history scan.
 - Reviewed the local AI server's request validation and local-only host/origin restrictions. Its in-memory request limit is not a sufficient public deployment control.
 - Ran the JavaScript account UI, analytics and card tests. Account authentication was mocked; an OAuth callback-code suppression check passed. All six server tests passed, including loopback HTTP tests for rejected cross-origin requests and request limits; the provider response in that test was mocked.
+
+- On November 18, checked the style-library table: RLS is enabled, three owner-scoped policies exist, and the anonymous role has no SELECT grant. An HTTP request using the publishable key without a user session returned 401 with permission denied. A rollback-only SQL test simulated the two actual user IDs and found that the second could neither read nor update the first user's synthetic row. This is not yet an end-to-end two-session app test.
 
 ## What I found and fixed
 - The proposed Google sign-in flow could put an OAuth code in the callback URL while analytics starts. The app suppresses analytics on callback URLs including authorization codes and error details; this still needs a real browser privacy review.
@@ -14,7 +16,7 @@ TripBox is a GitHub Pages prototype that processes photos in the browser. Its op
 
 ## What is left
 - Review the complete published assets, repository history, dependencies and exposure of secrets. The sign-in implementation pins its Supabase JavaScript dependency to 2.119.0 and includes a SHA-384 integrity check; verify the delivered script in a browser before release. Verify security of any deployed provider configuration and spending controls.
-- Before storing user data, create necessary tables with RLS and restrictive grants; prove unauthenticated and second-user access is denied, and capture evidence.
+- Before storing real user data, verify the account-library integration with two actual signed-in sessions, test create/read/update and account switching, and capture the required security-test screenshot.
 - If deploying an AI endpoint, design and verify abuse prevention, safe host/origin handling, rate limits across restarts, request-size limits and provider spending caps.
 - Verify the full photo workflow, analytics and session replay in a real browser and on a phone; verify sign-in and sign-out on a phone. Complete an adversarial review and document all findings and fixes.
 - This document is an initial record, not a completed security audit.
