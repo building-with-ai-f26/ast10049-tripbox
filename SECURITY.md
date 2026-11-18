@@ -22,11 +22,16 @@ TripBox is a GitHub Pages prototype that processes photos in the browser. Its op
 - Reviewed analytics settings: input and text masking and blocking for images, canvases and marked photo regions are configured. A synthetic image and a test phrase were used in the live app, but the corresponding populated review and input moments were not located in playback, so those protections are not yet confirmed in a live replay.
 - Re-ran account, card, workspace, and analytics checks against the local staged copy; these are automated checks, and the account test uses mocked authentication. They are not a full production security audit.
 
+## Repository and dependency follow-up
+- On November 18, cloned GitHub main at commit `5346ca996bb883521b1a85c0f4c87c205b6316ab` and scanned its reachable patch history for OpenAI-style, OpenRouter, Supabase secret-key and private-key-header patterns. The only OpenAI-style match was an example placeholder in `.env.example`; no other matches were found for those patterns. This is a narrow pattern scan, not proof that history contains no secrets.
+- Fetched the pinned Supabase JavaScript dependency from its CDN and independently computed its SHA-384; it matched the integrity value in the app. The PostHog analytics script is loaded from a remote, unpinned URL and remains a third-party supply-chain dependency.
+- On that clean checkout, six Python server tests passed after allowing a loopback port; the provider was mocked. Account, account-library, library-session, cards, workspace and analytics JavaScript tests also passed. Authentication and database service tests were mocked where indicated by the test output.
+
 ## Phone and cross-device check
 - Amanda reported that she signed in on her phone, saved style carried over to her computer, and she added and reviewed a photo on the phone. This is a builder-reported functional check, not a direct adversarial API test or a full phone security review.
 
 ## What is left
-- Review the complete published assets, repository history, dependencies and exposure of secrets. The sign-in implementation pins its Supabase JavaScript dependency to 2.119.0 and includes a SHA-384 integrity check; verify the delivered script in a browser before release. Verify security of any deployed provider configuration and spending controls.
+- Continue the published-assets and dependency review beyond the limited history scan and Supabase integrity check above. Verify the delivered script in a browser, any deployed provider configuration, and spending controls.
 - Test direct adversarial API requests with both signed-in sessions and verify existing-browser import. Amanda saved a screenshot showing HTTP 401 and permission denied; its request context is in the local evidence file.
 - If deploying an AI endpoint, design and verify abuse prevention, safe host/origin handling, rate limits across restarts, request-size limits and provider spending caps.
 - Verify remaining photo workflows, phone analytics and current-design session replay masking; phone sign-out has not been separately verified. Complete an adversarial review and document all findings and fixes.
