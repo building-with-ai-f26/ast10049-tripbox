@@ -10,7 +10,7 @@ let authListener, signedOut = false, oauth = false;
 const client = {auth: {
   onAuthStateChange(fn) { authListener = fn; },
   async getSession() { return {data: {session: null}, error: null}; },
-  async signInWithOAuth(options) { oauth = options.provider === 'google'; return {error: null}; },
+  async signInWithOAuth(options) { oauth = options.provider === 'google' && options.options?.redirectTo === 'https://building-with-ai-f26.github.io/ast10049-tripbox/prototype/'; return {error: null}; },
   async signOut() { signedOut = true; return {error: null}; }
 }};
 const window = {isSecureContext: true, supabase: {createClient: () => client}};
