@@ -558,6 +558,7 @@ function persistLibrary() {
   const generation = libraryGeneration;
   const session = librarySession;
   const records = referenceLibrary.map(({ id, name, blob, features, width, height, digest }) => ({ id, name, blob, features, width, height, digest }));
+  const preferences = { people: $('people-priority').value, colors: $('colors').value };
   $('library-status').textContent = 'Saving your style library…';
   const operation = libraryQueue.then(async () => {
     if (librarySyncFailed || generation !== libraryGeneration) throw new Error('Library session changed or needs recovery.');
@@ -568,10 +569,10 @@ function persistLibrary() {
       })
     })));
     if (generation !== libraryGeneration) throw new Error('Library session changed.');
-    const revision = await AccountLibrary.save(window.TripboxAccount.client, session, libraryRevision, { version: 1, photos });
+    const revision = await AccountLibrary.save(window.TripboxAccount.client, session, libraryRevision, { version: 1, photos, preferences });
     if (generation === libraryGeneration) libraryRevision = revision;
   });
-  libraryQueue = operation.catch(() => {});
+  libraryQueue = operation.catch(() => { if (generation === libraryGeneration) librarySyncFailed = true; });
   return operation.then(() => {
     if (generation === libraryGeneration) $('library-status').textContent = `${records.length} style references saved to your account.`;
   }).catch(() => {
@@ -602,6 +603,9 @@ window.addEventListener('tripbox-signout-failed', () => {
   ['examples','instagram-json','instagram-folder'].forEach(id => { $(id).disabled = librarySyncFailed; });
   renderReferences();
 });
+for (const id of ['people-priority', 'colors']) {
+  $(id).addEventListener('change', () => { if (libraryReady) persistIfEnabled(); });
+}
 $('more-references').addEventListener('click', () => { referenceLimit += 24; renderReferences(); });
 $('clear-references').addEventListener('click', async () => {
   removedReferences.forEach(p => URL.revokeObjectURL(p.url));
@@ -649,6 +653,8 @@ async function loadReferenceLibrary(session) {
   referenceLibrary.splice(0);
   removedReferences = [];
   importedInstagramPaths.clear(); instagramReferences.clear(); instagramFiles.clear();
+  $('people-priority').value = 'people';
+  $('colors').value = 'examples';
   $('import-browser-library').hidden = true;
   renderReferences();
   try {
@@ -669,6 +675,8 @@ async function loadReferenceLibrary(session) {
     }
     if (generation !== libraryGeneration) { loaded.forEach(item => URL.revokeObjectURL(item.url)); return; }
     referenceLibrary.push(...loaded);
+    if (['people', 'balanced'].includes(saved.payload?.preferences?.people)) $('people-priority').value = saved.payload.preferences.people;
+    if (['examples', 'bright', 'soft'].includes(saved.payload?.preferences?.colors)) $('colors').value = saved.payload.preferences.colors;
     libraryRevision = saved.revision;
     $('library-status').textContent = `${loaded.length} style references saved to your account.`;
     try {
