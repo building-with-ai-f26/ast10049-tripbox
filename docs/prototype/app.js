@@ -654,6 +654,7 @@ async function loadReferenceLibrary(session) {
   referenceLibrary.splice(0);
   removedReferences = [];
   importedInstagramPaths.clear(); instagramReferences.clear(); instagramFiles.clear();
+  $('example-status').textContent = 'No examples yet. Add some to enable style-informed suggestions.';
   $('people-priority').value = 'people';
   $('colors').value = 'examples';
   $('import-browser-library').hidden = true;
@@ -676,6 +677,7 @@ async function loadReferenceLibrary(session) {
     }
     if (generation !== libraryGeneration) { loaded.forEach(item => URL.revokeObjectURL(item.url)); return; }
     referenceLibrary.push(...loaded);
+    if (loaded.length) $('example-status').textContent = `${loaded.length} photo examples ready for local color and saturation matching.`;
     if (['people', 'balanced'].includes(saved.payload?.preferences?.people)) $('people-priority').value = saved.payload.preferences.people;
     if (['examples', 'bright', 'soft'].includes(saved.payload?.preferences?.colors)) $('colors').value = saved.payload.preferences.colors;
     libraryRevision = saved.revision;
