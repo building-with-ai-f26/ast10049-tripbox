@@ -38,6 +38,10 @@ TripBox is a GitHub Pages prototype that processes photos in the browser. Its op
 - Repeated a read-only GET for the style-library revision using only the public publishable key and no user session. Supabase returned HTTP 401 with permission denied. This confirms anonymous table access was refused at the time of this test; it does not establish isolation between two authenticated users.
 - PostHog's recordings page remained accessible, but the populated photo-review and typed-input moments have not been verified in playback. Do not treat replay privacy as passed until both are observed.
 
+## November 19 published-source follow-up
+- Compared Git blob hashes for the prototype HTML, analytics configuration, account, curation, reference store, account library, AI, cards and workspace scripts against current GitHub main; the inspected local copies matched. Reviewed their script origins: Supabase is version-pinned with an integrity attribute, and PostHog loads a remote unpinned script. External card links use `noopener noreferrer`. This is a targeted source review, not proof that the CDN-delivered files are safe or that all published assets have been audited.
+- Session replay listed recent prototype activity, but the specific populated review and typed-input moments were not verified in playback; the privacy check remains open.
+
 ## What is left
 - Continue the published-assets and dependency review beyond the limited history scan and Supabase integrity check above. Verify the delivered script in a browser, any deployed provider configuration, and spending controls.
 - Test direct adversarial API requests with both signed-in sessions and verify existing-browser import. Amanda saved a screenshot showing HTTP 401 and permission denied; its request context is in the local evidence file.
