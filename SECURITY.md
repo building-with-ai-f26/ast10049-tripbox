@@ -27,6 +27,10 @@ TripBox is a GitHub Pages prototype that processes photos in the browser. Its op
 - Fetched the pinned Supabase JavaScript dependency from its CDN and independently computed its SHA-384; it matched the integrity value in the app. The PostHog analytics script is loaded from a remote, unpinned URL and remains a third-party supply-chain dependency.
 - On that clean checkout, six Python server tests passed after allowing a loopback port; the provider was mocked. Account, account-library, library-session, cards, workspace and analytics JavaScript tests also passed. Authentication and database service tests were mocked where indicated by the test output.
 
+## Source review follow-up
+- Searched JavaScript in the clean checkout's app and analytics source for `innerHTML`, `outerHTML`, `insertAdjacentHTML`, `document.write`, and `window.open`; no uses were found. This targeted search does not prove the absence of cross-site scripting or other vulnerabilities.
+- Compared the checked-out app entry point, main app script, analytics configuration, and style-library migration to the then-current GitHub files by blob hash; they matched. Other published assets and dependencies still need review.
+
 ## Phone and cross-device check
 - Amanda reported that she signed in on her phone, saved style carried over to her computer, and she added and reviewed a photo on the phone. This is a builder-reported functional check, not a direct adversarial API test or a full phone security review.
 
