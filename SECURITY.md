@@ -1,4 +1,4 @@
-# Security audit — work in progress
+# Build 3 security review
 
 ## My kind of app
 TripBox is a GitHub Pages prototype that processes photos in the browser. Its optional AI server is local-only. Google sign-in is live; on November 18 a real Google sign-in returned to the deployed app, and Amanda reported sign-in and sign-out working. Account-backed style-reference previews and selected style preferences are live; the style-library table uses owner-scoped RLS. Birthday storage is not implemented.
@@ -12,7 +12,7 @@ TripBox is a GitHub Pages prototype that processes photos in the browser. Its op
 
 ## What I found and fixed
 - The proposed Google sign-in flow could put an OAuth code in the callback URL while analytics starts. The app suppresses analytics on callback URLs including authorization codes and error details; this still needs a real browser privacy review.
-- The real photo workflow and third-party user testing have not been verified end-to-end. Google sign-in was verified on the live site; Amanda reported that sign-out also works.
+- Amanda reported that a classmate completed the live phone workflow and created a draft. This was a functional check. Google sign-in was verified on the live site, and Amanda reported that sign-out also works.
 
 - A repeat read-only anonymous HTTP request on November 18, using the publishable key without a user session, returned HTTP 401 and PostgreSQL permission-denied code 42501 for the style-library table. The actual response was saved locally as submission evidence; it does not replace a two-session adversarial API test.
 - A current redesigned dashboard replay showed masked text and an account area hidden from recording. A replay of populated photo-review and typed-input areas remains to be checked.
@@ -42,9 +42,15 @@ TripBox is a GitHub Pages prototype that processes photos in the browser. Its op
 - Compared Git blob hashes for the prototype HTML, analytics configuration, account, curation, reference store, account library, AI, cards and workspace scripts against current GitHub main; the inspected local copies matched. Reviewed their script origins: Supabase is version-pinned with an integrity attribute, and PostHog loads a remote unpinned script. External card links use `noopener noreferrer`. This is a targeted source review, not proof that the CDN-delivered files are safe or that all published assets have been audited.
 - Session replay listed recent prototype activity, but the specific populated review and typed-input moments were not verified in playback; the privacy check remains open.
 
-## What is left
-- Continue the published-assets and dependency review beyond the limited history scan and Supabase integrity check above. Verify the delivered script in a browser, any deployed provider configuration, and spending controls.
-- Test direct adversarial API requests with both signed-in sessions and verify existing-browser import. Amanda saved a screenshot showing HTTP 401 and permission denied; its request context is in the local evidence file.
-- If deploying an AI endpoint, design and verify abuse prevention, safe host/origin handling, rate limits across restarts, request-size limits and provider spending caps.
-- Verify remaining photo workflows, phone analytics and current-design session replay masking; phone sign-out has not been separately verified. Complete an adversarial review and document all findings and fixes.
-- This document is an initial record, not a completed security audit.
+## Build 3 submission findings
+
+- **Signed-in isolation.** In the November 19 My style screenshots, a synthetic reference appeared in the first signed-in account. After refresh, the second signed-in account showed a different saved reference and the first account's synthetic reference was absent. Together with the rollback-only SQL test described above, this supports owner isolation in the observed UI and database tests. The anonymous HTTP 401 was a separate check.
+- **Deployment and storage scope.** The submitted prototype is static. Ordinary trip photos are processed in the browser. Saved style-reference previews and preferences use a Postgres row protected by RLS. Object-storage bucket controls and a public paid AI route are outside the current application flow. The optional AI server is local-only.
+- **Write limits and backups.** The checked-in migration caps a style-library payload at 8 MiB. A production write-frequency limit for this flow was not verified. Backup availability and restoration for the live project were also not verified.
+- **Dependency advisory review.** The [Supabase JavaScript security page](https://github.com/supabase/supabase-js/security) showed no published repository advisories when reviewed. The app pins Supabase JS to 2.119.0 and the earlier integrity check matched. The [PostHog JavaScript security page](https://github.com/PostHog/posthog-js/security) lists a historical XSS advisory. The app uses an unpinned CDN script, so this review did not establish the exact delivered version or its advisory status. This was a first-party advisory review, with transitive dependency coverage still open.
+
+## Open verification
+
+- Verify masking of populated photo-review and typed-input content in actual PostHog playback, phone events, and privacy during a real OAuth callback.
+- Verify backup and restore evidence and production write throttling. Direct signed-in API isolation and existing-browser style import remain unverified.
+- Before any public AI rollout, verify request limits, abuse controls, origin validation and provider spending caps.
