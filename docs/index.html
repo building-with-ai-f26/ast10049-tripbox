@@ -266,7 +266,7 @@
 
     <!-- LIVING PRD -->
     <section id="prd">
-      <h2>Living PRD v3 · Updated November 18, 2026</h2>
+      <h2>Living PRD v3 · Updated November 21, 2026</h2>
 
       <p class="meta">
         Current implementation and risk-test plan. External user testing and pod feedback have not yet been recorded.
@@ -275,7 +275,7 @@
       <h3>Build 3: hosting and security choices</h3>
       <p>The beginner-lane product page and static prototype are served by GitHub Pages. Local visual matching works in the browser; the existing optional AI server is local-only. Render is being considered for a secured live AI service, but no public AI deployment has been verified.</p>
       <p>A Supabase project and Google OAuth configuration support live Google sign-in. Google sign-in and account-backed style-library previews are live. The style-library table has RLS and owner-only policies; an anonymous public-key request was denied, a two-identity SQL test blocked cross-account access, and a synthetic reference saved in one live test account did not appear in the other.</p>
-      <p>Trip photos remain in the browser tab; signed-in users save small style-reference previews and selected style choices to their account. Existing browser references can be imported explicitly. Amanda reports that she signed in on her phone, her saved style carried over to her computer, and she added and reviewed a photo on her phone. An editable 5 × 7 birthday card draft is available in Card Studio; saved birthdays, birthday Story drafts, Instagram integration and face recognition remain future work. See <a href="https://github.com/building-with-ai-f26/ast10049-tripbox/blob/main/SECURITY.md">the security review in progress</a>.</p>
+      <p>Trip photos remain in the browser tab; signed-in users save small style-reference previews and selected style choices to their account. Existing browser references can be imported explicitly. Amanda reports that she signed in on her phone, her saved style carried over to her computer, and she added and reviewed a photo on her phone. An editable 5 × 7 birthday card draft is available in Card Studio; saved birthdays, birthday Story drafts, Instagram integration and face recognition remain future work. See <a href="https://github.com/building-with-ai-f26/ast10049-tripbox/blob/main/SECURITY.md">the Build 3 security review</a>.</p>
       <p class="meta">This page and the prototype use PostHog for pageviews, clicks, and masked session replay.
         Photo areas and input values are configured to be excluded from replay; this still needs verification in the current design. Analytics may be blocked by browser settings.</p>
       <h3>1. Target User &amp; The Job to Be Done</h3>
@@ -550,10 +550,12 @@
       <div class="log-entry">
         <h3>Build 3 · Go Live &amp; Security Audit (Due Nov 23 at noon)</h3>
         <ul>
-          <li><strong>Lane and current site:</strong> Beginner lane. The static prototype is live on GitHub Pages. Amanda reports signing in, adding and reviewing a photo on her phone, and seeing her saved style carry over to her computer. Outside-user testing remains to be recorded.</li>
+          <li><strong>Lane and current site:</strong> Beginner lane. The static prototype is live on GitHub Pages. Amanda reports signing in, adding and reviewing a photo on her phone, and seeing her saved style carry over to her computer. A classmate completed the live phone workflow and created a draft.</li>
           <li><strong>Shipped November 18:</strong> A keepsake dashboard, workspace navigation and TripBox logo; Google sign-in with account-backed style references and selected style preferences. A synthetic reference survived reload and sign-out/sign-in in one account, and did not appear in the second account. The anonymous public-key request was denied; the SQL role-simulation test blocked cross-account reads and updates. Full accessibility, remaining phone workflows and current-design replay privacy checks remain. A 5 × 7 birthday-card draft was added to Card Studio; the full Birthday Workshop, birthday reminders and Story drafts remain future work. PostHog showed live-site pageviews and recordings, with text masked in the inspected replay; a current-design replay showed masked dashboard text and a hidden account area; photo-review and input masking and phone events still need verification. The optional AI server remains local-only.</li>
           <li><strong>Evidence so far:</strong> Server unit and loopback HTTP tests passed with a mocked provider; account-interface tests use mocked authentication. On November 18 a real Google sign-in returned successfully to the live app after fixing its redirect; Amanda also reported that sign-in and sign-out work. This does not prove third-party use.</li>
-          <li><strong>Still needed:</strong> The refused anonymous-access test and screenshot are saved. Complete the security audit, verify current-design replay privacy and phone events, confirm any other spending, build and push on a second qualifying day, and submit.</li>
+          <li><strong>What broke:</strong> Google sign-in originally returned to the GitHub Pages domain root and showed a 404. The redirect was updated to the prototype URL and a real Google sign-in returned to the live app.</li>
+          <li><strong>What we learned:</strong> After creating a draft, the classmate asked how AI decides what goes into it. The public prototype recommends photos with local visual matching, then builds editable drafts from the reviewed selections. The question showed that the interface could explain those two steps more clearly.</li>
+          <li><strong>Submission evidence:</strong> Two commits landed on separate days, November 18 and 19. The signed-in screenshots showed a synthetic saved reference in one account and its absence from the other after refresh. The anonymous 401 is recorded separately. Production backup and write-frequency evidence, populated replay masking, and phone analytics remain open.</li>
           <li><strong>Cost &amp; time:</strong> Amanda reports about 5 hours this week and a $20/month subscription. Estimated Build 3 subscription allocation: $20 ÷ 4 = ~$5 for the week, or ~$1 per hour at 5 hours. This is a portion of the monthly subscription, not an additional charge; other Build 3 costs have not yet been verified.</li>
         </ul>
       </div>
