@@ -46,7 +46,7 @@ TripBox is a GitHub Pages prototype that processes photos in the browser. Its op
 
 - **Signed-in isolation.** In the November 19 My style screenshots, a synthetic reference appeared in the first signed-in account. After refresh, the second signed-in account showed a different saved reference and the first account's synthetic reference was absent. Together with the rollback-only SQL test described above, this supports owner isolation in the observed UI and database tests. The anonymous HTTP 401 was a separate check.
 - **Deployment and storage scope.** The submitted prototype is static. Ordinary trip photos are processed in the browser. Saved style-reference previews and preferences use a Postgres row protected by RLS. Object-storage bucket controls and a public paid AI route are outside the current application flow. The optional AI server is local-only.
-- **Write limits and backups.** The checked-in migration caps a style-library payload at 8 MiB. A production write-frequency limit for this flow was not verified. See the November 21 verification below for the manual backup result.
+- **Write limits and backups.** The checked-in migration caps a style-library payload at 8 MiB. A production database trigger now limits each signed-in account to 60 successful style-library writes in a one-minute window. See the November 21 verification below for the manual backup result.
 - **Dependency advisory review.** The [Supabase JavaScript security page](https://github.com/supabase/supabase-js/security) showed no published repository advisories when reviewed. The app pins Supabase JS to 2.119.0 and the earlier integrity check matched. The [PostHog JavaScript security page](https://github.com/PostHog/posthog-js/security) lists a historical XSS advisory. On November 21, the CDN script identified itself as PostHog JS 1.453.2, above the advisory’s patched version of 1.57.2. A fresh temporary npm lockfile using PostHog JS 1.453.2 and Supabase JS 2.119.0 was audited and npm returned zero known advisories. This covers the npm-resolved dependency tree for those versions. The unpinned CDN can change, and separately loaded replay assets were outside this audit.
 
 ## November 21 verification
@@ -55,8 +55,13 @@ TripBox is a GitHub Pages prototype that processes photos in the browser. Its op
 - Re-ran six JavaScript suites and six Python tests against `95e7b45`. All passed. Account and database services and the AI provider were mocked where applicable.
 - A read-only manual export of production completed on November 21. The local archive was readable, had owner-only permissions, and listed the TripBox style-library data and row-level security entries. A restore was not tested. The archive is kept outside the repository.
 
+## November 21 write limit and replay follow-up
+
+- Tested the rate-limit migration in a local PostgreSQL engine. It accepted 60 writes and rejected write 61 with the PostgREST 429 error code, preserved the existing revision on rejection, ignored attempted counter overrides, and reset after the window elapsed. A second authenticated account retained a separate quota and could not read the first account’s row. The trigger is enabled in production and row-level security remains enabled. The burst test ran locally.
+- In a desktop replay of the live prototype, the synthetic trip name was hidden at the input event and the populated review gallery hid the synthetic image. Phone playback and the real OAuth callback remain open.
+
 ## Open verification
 
-- Verify masking of populated photo-review and typed-input content in actual PostHog playback, phone events, and privacy during a real OAuth callback.
-- Test restoration in a separate environment and verify production write throttling. Direct signed-in API isolation and existing-browser style import remain unverified.
+- Verify phone events and replay masking, and privacy during a real OAuth callback.
+- Test restoration in a separate environment. Direct signed-in API isolation and existing-browser style import remain unverified.
 - Before any public AI rollout, verify request limits, abuse controls, origin validation and provider spending caps.
