@@ -43,11 +43,15 @@ function render() {
   $('new-project').disabled = importing || examplesBusy;
   $('confirm-new-project').disabled = importing || examplesBusy;
   $('build-drafts').disabled = !photos.length || importing || examplesBusy;
+  $('review-next-step').hidden = !photos.length;
+  $('review-summary').textContent = selected.length
+    ? `${selected.length} ${selected.length === 1 ? 'keeper' : 'keepers'} in this trip.`
+    : 'Keep and label photos to add them to your drafts.';
   const duplicateGroups = view === 'duplicates' ? Curation.groups(photos).filter(g => g.length > 1) : [];
   const duplicateIds = new Set(duplicateGroups.flat().map(p => p.id));
   const visible = visiblePhotos(duplicateIds);
   $('empty').hidden = visible.length > 0;
-  $('empty').textContent = !photos.length ? 'Add your trip photos above. Your review starts here.' : 'No photos in this view. Try All photos or a different subject filter.';
+  $('empty').textContent = !photos.length ? 'Add trip photos to start reviewing your picks.' : 'No photos in this view. Try All photos or a different subject filter.';
   $('more').hidden = visible.length <= visibleLimit;
   $('grid').replaceChildren();
   for (const photo of visible.slice(0, visibleLimit)) {
@@ -60,7 +64,10 @@ function render() {
     button.textContent = photo.manualKeep ? 'Kept by you' : photo.selected ? 'Keep this pick' : 'Keep';
     button.setAttribute('aria-label', `${button.textContent}: ${photo.name}`);
     button.setAttribute('aria-pressed', String(Boolean(photo.manualKeep)));
-    button.addEventListener('click', () => { applyChoice(photo, photo.manualKeep ? 'reset' : 'keep'); restoreCardFocus(photo.id); });
+    button.dataset.reviewAction = 'keep';
+    button.addEventListener('click', () => {
+      changeCardChoice(button, () => applyChoice(photo, photo.manualKeep ? 'reset' : 'keep'));
+    });
     card.dataset.photo = photo.id;
     const open = document.createElement('button'); open.className = 'photo-open';
     open.setAttribute('aria-label', `Review ${photo.name}`); open.append(img);
@@ -68,7 +75,10 @@ function render() {
     card.append(open, name, button);
     const skip = textElement('button', photo.excluded ? 'Skipped · Undo' : 'Skip');
     skip.className = 'skip-button'; skip.setAttribute('aria-pressed', String(Boolean(photo.excluded)));
-    skip.addEventListener('click', () => { applyChoice(photo, photo.excluded ? 'reset' : 'skip'); restoreCardFocus(photo.id); });
+    skip.dataset.reviewAction = 'skip';
+    skip.addEventListener('click', () => {
+      changeCardChoice(skip, () => applyChoice(photo, photo.excluded ? 'reset' : 'skip'));
+    });
     card.append(skip);
     const state = textElement('p', photo.excluded ? 'Skipped' : photo.manualKeep ? 'Your keeper' : photo.selected ? 'Suggested · review me' : 'Not reviewed');
     state.className = 'photo-state'; card.append(state);
@@ -83,19 +93,25 @@ function render() {
     subjectLabel.append(subject); card.append(subjectLabel);
     const original = document.createElement('a'); original.textContent = 'View original ↗';
     original.href = photo.originalUrl; original.target = '_blank'; original.rel = 'noopener'; original.className = 'original-link';
-    const download = document.createElement('a'); download.textContent = 'Download original'; download.href = photo.originalUrl; download.download = photo.name; download.className = 'original-link';
-    card.append(original, download);
+    card.append(original, originalDownload(photo, 'Download original'));
     if (photo.reason) { const reason = document.createElement('p'); reason.className = 'reason'; reason.textContent = photo.reason; card.append(reason); }
     if (view === 'duplicates') {
       const group = duplicateGroups.find(g => g.includes(photo));
       const tag = document.createElement('p'); tag.className = 'reason';
       tag.textContent = `Similar-shot group ${group[0].id + 1} · ${group.length} photos. Review originals before choosing.`; card.append(tag);
       const only = textElement('button', 'Keep only this take');
+      only.dataset.reviewAction = 'keep-only';
       only.addEventListener('click', () => {
-        rememberChoices(photos.filter(p => p === photo || Curation.similar(p, photo)));
-        photos.forEach(p => { if (p !== photo && Curation.similar(p, photo)) setChoice(p, 'skip'); });
-        setChoice(photo, 'keep'); invalidateDrafts(); render(); say('Kept this take and skipped its similar shots. Undo restores the whole choice.');
-      }); card.append(only);
+        changeCardChoice(only, () => {
+          rememberChoices(photos.filter(p => p === photo || Curation.similar(p, photo)));
+          photos.forEach(p => { if (p !== photo && Curation.similar(p, photo)) setChoice(p, 'skip'); });
+          setChoice(photo, 'keep');
+          invalidateDrafts();
+          render();
+          say('Kept this take and skipped its similar shots. Undo restores the whole choice.');
+        });
+      });
+      card.append(only);
     }
     if (photo.selected) {
       const fieldset = document.createElement('fieldset'); fieldset.className = 'labels';
@@ -241,12 +257,10 @@ function instagramUris(data) {
   }
   return [...result];
 }
-$('export-help').addEventListener('click', () => $('export-instructions').showModal());
 $('example-source').addEventListener('change', () => {
   const useExport = $('example-source').value === 'export';
   $('photo-examples').hidden = useExport;
   $('instagram-export').hidden = !useExport;
-  if (useExport) $('export-instructions').showModal();
 });
 async function importExamples(event, fromFolder = false) {
   if (examplesBusy || !libraryReady) return;
@@ -299,10 +313,10 @@ async function importExamples(event, fromFolder = false) {
     }
     const videos = [...instagramReferences].filter(path => !isExampleImage(path)).length;
     const notes = [`${styleExamples.length} photo examples ready for local color and saturation matching.`];
-    if (missing) notes.push(`${missing} referenced photos missing. Choose the whole unzipped export folder containing its media, not just the JSON files.`);
-    if (fromFolder && !instagramReferences.size) notes.push('No media references found. Choose your posts/stories/reels JSON files in step 1; photos alone cannot identify which images you posted.');
+    if (missing) notes.push(`${missing} referenced photos still needed. Choose the unzipped folder containing those photos.`);
+    if (fromFolder && !instagramReferences.size) notes.push('Choose an unzipped Instagram export containing photos and their Posts, Stories, or Reels JSON. You can also choose the media JSON separately.');
     if (badJson) notes.push(`${badJson} JSON files could not be read. Use valid Instagram JSON files no larger than 100 MB each.`);
-    if (unrecognized) notes.push(`${unrecognized} JSON files contained no supported media references. Look for the media JSON files, not account settings or a Tripbox draft plan.`);
+    if (unrecognized && !fromFolder) notes.push(`${unrecognized} JSON files contained no supported media references. Look for the media JSON files, not account settings or a Tripbox draft plan.`);
     if (videos) notes.push(`${videos} video references skipped: still photos only; reel video content is not analyzed.`);
     if (rejected) notes.push(`${rejected} files could not be opened; try JPG or PNG.`);
     renderReferences();
@@ -350,6 +364,14 @@ $('analyze').addEventListener('click', () => {
   view = 'shortlist'; visibleLimit = 40; render(); say(summary); location.hash = '#gallery';
 });
 function textElement(tag, text) { const el = document.createElement(tag); el.textContent = text; return el; }
+function originalDownload(photo, label) {
+  const link = textElement('a', label);
+  link.href = photo.originalUrl;
+  link.download = photo.name;
+  link.className = 'original-link';
+  link.setAttribute('aria-label', `${label}: ${photo.name}`);
+  return link;
+}
 function buildPlan() {
   if (importing || examplesBusy) { $('draft-status').textContent = 'Wait for the import to finish before creating drafts.'; return; }
   const config = settings();
@@ -378,7 +400,8 @@ function renderDrafts() {
   if (!draftPlan) return;
   for (const section of draftPlan.sections) {
     const block = document.createElement('details'); block.open = draftPlan.sections.length <= 10;
-    block.append(textElement('summary', `${section.title} · ${section.ids.length} photos`));
+    const count = section.ids.length;
+    block.append(textElement('summary', `${section.title} · ${count} ${count === 1 ? 'photo' : 'photos'}`));
     if (!section.ids.length) block.append(textElement('p', 'An empty little spot. Add labels in your collection, then rebuild your drafts.'));
     const row = document.createElement('div'); row.className = 'draft-row';
     section.ids.forEach((id, index) => {
@@ -390,6 +413,9 @@ function renderDrafts() {
         img.className = 'frame-preview';
       }
       card.append(img, textElement('figcaption', `${index + 1}. ${photo.name}`));
+      if (section.type === 'Post' || section.type === 'Story') {
+        card.append(originalDownload(photo, 'Download photo'));
+      }
       if (section.type === 'Frame') {
         const ppi = Math.min(photo.width / draftPlan.settings.frameWidth, photo.height / draftPlan.settings.frameHeight);
         card.append(textElement('p', `${photo.width} × ${photo.height} original pixels · about ${Math.round(ppi)} pixels/inch at this size. ${ppi < 200 ? 'May look soft; inspect the original.' : 'Pixel count only; focus and print quality still need review.'} Full image fits with margins; no crop.`));
@@ -458,9 +484,20 @@ function undoChoice() {
     renderReview();
   }
 }
-function restoreCardFocus(id) {
-  const next = $('grid').querySelector(`[data-photo="${id}"] .photo-open`);
-  (next || $('all')).focus();
+function changeCardChoice(button, change) {
+  const grid = $('grid');
+  const previous = button.closest('[data-photo]');
+  const index = [...grid.children].indexOf(previous);
+  const top = window.scrollY;
+  const left = window.scrollX;
+  change();
+
+  // A reset or skip can remove this card from the current filter.
+  const card = grid.querySelector(`[data-photo="${previous.dataset.photo}"]`)
+    || grid.children[Math.min(index, grid.children.length - 1)];
+  const control = card?.querySelector(`[data-review-action="${button.dataset.reviewAction}"]`);
+  (control || $('all')).focus({ preventScroll: true });
+  window.scrollTo({ top, left, behavior: 'instant' });
 }
 function openReview(id) {
   reviewIds = visiblePhotos().map(p => p.id);

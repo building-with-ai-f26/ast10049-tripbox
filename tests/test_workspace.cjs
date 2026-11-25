@@ -5,6 +5,15 @@ const vm = require('node:vm');
 const node = () => ({ hidden: false, attrs: {}, setAttribute(k, v) { this.attrs[k] = v; }, removeAttribute(k) { delete this.attrs[k]; } });
 const ids = Object.fromEntries(['dashboard','taste','project-options','gallery','groups','drafts-section','card-studio'].map(id => [id, node()]));
 const photos = node(), setup = Object.assign(node(), { querySelector: () => photos });
+let focusedDrafts = false, scrolledToDrafts = false;
+ids['drafts-heading'] = {
+  focus({ preventScroll }) {
+    assert.equal(ids['drafts-section'].hidden, false);
+    assert.equal(preventScroll, true);
+    focusedDrafts = true;
+  },
+  scrollIntoView() { scrolledToDrafts = true; }
+};
 const links = ['#home','#start','#gallery','#drafts-section','#card-studio','#taste'].map(hash => Object.assign(node(), {hash}));
 const nav = { querySelectorAll: () => links };
 const callbacks = {};
@@ -20,6 +29,11 @@ assert.equal(ids.taste.hidden, true); assert.equal(ids.gallery.hidden, true);
 context.location.hash = '#gallery'; callbacks.hashchange();
 assert.equal(ids.gallery.hidden, false); assert.equal(ids.groups.hidden, false);
 assert.equal(ids['project-options'].hidden, true);
+context.location.hash = '#drafts-section'; callbacks.hashchange();
+assert.equal(ids['drafts-section'].hidden, false);
+assert.equal(ids.gallery.hidden, true);
+assert.equal(focusedDrafts, true);
+assert.equal(scrolledToDrafts, true);
 context.location.hash = '#taste'; callbacks.hashchange();
 assert.equal(ids.taste.hidden, false); assert.equal(photos.hidden, true);
 context.location.hash = '#card-studio'; callbacks.hashchange();

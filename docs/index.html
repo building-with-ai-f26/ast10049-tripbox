@@ -266,11 +266,15 @@
 
     <!-- LIVING PRD -->
     <section id="prd">
-      <h2>Living PRD v3 · Updated November 21, 2026</h2>
+      <h2>Living PRD v4 · Updated November 25, 2026</h2>
 
       <p class="meta">
-        Current implementation and risk-test plan. External user testing and pod feedback have not yet been recorded.
+        Current implementation, early user feedback, and the risk-test plan.
       </p>
+
+      <h3>Build 4 · From photo review to sharing</h3>
+      <p>Early tester feedback changed the requirements for the review and draft flow. Changing a pick should preserve the user’s place in the gallery. The bottom of review should confirm the keeper count and lead directly to drafts with the current selections. Post and Story drafts should offer the original photos for manual sharing and explain what the separate JSON plan contains.</p>
+      <p>My Style offers two ways to supply examples for recommendations. Choose favorite photos or screenshots, or select an unzipped Instagram export that contains photos and their JSON references. See the <a href="#build-4">Build 4 before-and-after notes</a>.</p>
 
       <h3>Build 3: hosting and security choices</h3>
       <p>The beginner-lane product page and static prototype are served by GitHub Pages. Local visual matching works in the browser; the existing optional AI server is local-only. Render is being considered for a secured live AI service, but no public AI deployment has been verified.</p>
@@ -560,23 +564,16 @@
         </ul>
       </div>
 
-      <div class="log-entry">
-        <h3>Build 4 · Test.py: Choose Track A or Track B (Due Nov 30)</h3>
-
+      <div class="log-entry" id="build-4">
+        <h3>Build 4 · Test &amp; Improve (Due Nov 30 at noon)</h3>
         <ul>
-          <li>
-            <strong>Evaluation track:</strong>
-            Not yet selected: a 10-case domain evaluation and one outside
-            review, or testing with 3–5 outside users.
-          </li>
-          <li>
-            <strong>Results, improvements, and PRD v4:</strong>
-            Not yet recorded.
-          </li>
-          <li>
-            <strong>Cost &amp; time:</strong>
-            Not yet recorded.
-          </li>
+          <li><strong>Track B · User experience.</strong> Amanda reported one tester on November 25. Their feedback covered losing their place after deselecting a photo, uncertainty about what to do after review, and confusion about how to share to Instagram. A likely PostHog replay shows visits to Add photos and Review picks. The tester’s identity and individual deselection were not confirmed in playback.</li>
+          <li><strong>Preserve review position.</strong> Before, removing a photo in Keepers sent focus to the filters and jumped back up the page. In a 16-photo browser test it jumped about 3,100 pixels on desktop and 7,600 at phone size. After, the gallery held its position on both and focus moved to the next keeper.</li>
+          <li><strong>Make the next action visible.</strong> Before, Review picks ended with photo groups and users had to find Create drafts in the navigation. After, a keeper count and a Next button at the bottom lead to Create drafts with the same selections and labels.</li>
+          <li><strong>Explain Instagram sharing.</strong> Before, a prominent JSON download gave no clear path to Instagram. After, Post and Story drafts offer original photo downloads and steps for sharing inside Instagram. The separate JSON download is labeled as a personal planning file. My Style explains how to import photos or an Instagram export for references.</li>
+          <li><strong>Verification.</strong> In Chrome on desktop and at an emulated phone size, synthetic-photo checks covered deselect, skip, undo, the review-to-drafts transition, and separate original-photo and JSON downloads. The style-reference folder import was checked on desktop with a synthetic Instagram export. A real phone retest and additional outside-user replays are pending.</li>
+          <li><strong>What we learned.</strong> An explicit next step now signals that the picks carried forward. Showing the actual photo downloads next to the JSON plan helps explain the two files’ purposes. Amanda shared the tester’s feedback and used Codex to make the fixes and reproduce the flow.</li>
+          <li><strong>Cost, time, and remaining evidence.</strong> The checks used synthetic files and a mocked model provider. Builder hours, weekly spend, pod feedback, and the remainder of the three-to-five-person Track B evaluation are pending.</li>
         </ul>
       </div>
 
