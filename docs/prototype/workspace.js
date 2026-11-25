@@ -14,7 +14,7 @@
   const panels = [dashboard, setup, options, gallery, groups, drafts, cards];
   const routes = { home: 'home', start: 'photos', gallery: 'review', groups: 'review',
     'drafts-section': 'drafts', 'card-studio': 'cards', taste: 'style' };
-  function show() {
+  function show(moveFocus = false) {
     const view = routes[location.hash.slice(1)] || 'home';
     for (const panel of panels) panel.hidden = true;
     photos.hidden = true;
@@ -30,8 +30,13 @@
       else link.removeAttribute('aria-current');
     }
     document.documentElement.classList.add('workspace-ready');
+    if (moveFocus && view === 'drafts') {
+      const heading = document.getElementById('drafts-heading');
+      heading.focus({ preventScroll: true });
+      heading.scrollIntoView({ behavior: 'instant' });
+    }
   }
-  window.addEventListener('hashchange', show);
+  window.addEventListener('hashchange', () => show(true));
   show();
 })();
 
