@@ -266,7 +266,7 @@
 
     <!-- LIVING PRD -->
     <section id="prd">
-      <h2>Living PRD v4 · Updated November 25, 2026</h2>
+      <h2>Living PRD v4 · Updated November 26, 2026</h2>
 
       <p class="meta">
         Current implementation, early user feedback, and the risk-test plan.
@@ -281,7 +281,7 @@
       <p>A Supabase project and Google OAuth configuration support live Google sign-in. Google sign-in and account-backed style-library previews are live. The style-library table has RLS and owner-only policies; an anonymous public-key request was denied, a two-identity SQL test blocked cross-account access, and a synthetic reference saved in one live test account did not appear in the other.</p>
       <p>Trip photos remain in the browser tab; signed-in users save small style-reference previews and selected style choices to their account. Existing browser references can be imported explicitly. Amanda reports that she signed in on her phone, her saved style carried over to her computer, and she added and reviewed a photo on her phone. An editable 5 × 7 birthday card draft is available in Card Studio; saved birthdays, birthday Story drafts, Instagram integration and face recognition remain future work. See <a href="https://github.com/building-with-ai-f26/ast10049-tripbox/blob/main/SECURITY.md">the Build 3 security review</a>.</p>
       <p class="meta">This page and the prototype use PostHog for pageviews, clicks, and masked session replay.
-        Photo areas and input values are configured to be excluded from replay; this still needs verification in the current design. Analytics may be blocked by browser settings.</p>
+        In a November 21 desktop replay, PostHog hid the synthetic trip name and imported photo. Masking on a physical phone still needs verification. Analytics may be blocked by browser settings.</p>
       <h3>1. Target User &amp; The Job to Be Done</h3>
 
       <p>
@@ -572,7 +572,7 @@
           <li><strong>Preserve review position.</strong> Before, removing a photo in Keepers sent focus to the filters and jumped back up the page. In a 16-photo browser test it jumped about 3,100 pixels on desktop and 7,600 at phone size. After, the gallery held its position on both and focus moved to the next keeper.</li>
           <li><strong>Make the next action visible.</strong> Before, Review picks ended with photo groups and users had to find Create drafts in the navigation. After, a keeper count and a Next button at the bottom lead to Create drafts with the same selections and labels.</li>
           <li><strong>Explain Instagram sharing.</strong> Before, a prominent JSON download gave no clear path to Instagram. After, Post and Story drafts offer original photo downloads and steps for sharing inside Instagram. The separate JSON download is labeled as a personal planning file. My Style explains how to import photos or an Instagram export for references.</li>
-          <li><strong>Verification.</strong> In Chrome on desktop and at an emulated phone size, synthetic-photo checks covered deselect, skip, undo, the review-to-drafts transition, and separate original-photo and JSON downloads. The style-reference folder import was checked on desktop with a synthetic Instagram export. A real phone retest and additional outside-user replays are pending.</li>
+          <li><strong>Verification.</strong> On November 26, the public Product Page’s Try the prototype link opened the live app. In Chrome on desktop and at an emulated phone size, synthetic-photo checks covered deselect, skip, undo, the review-to-drafts transition, and separate original-photo and JSON downloads. The style-reference folder import was checked on desktop with a synthetic Instagram export. A real phone retest and additional outside-user replays are pending.</li>
           <li><strong>What we learned.</strong> An explicit next step now signals that the picks carried forward. Showing the actual photo downloads next to the JSON plan helps explain the two files’ purposes. Amanda shared tester feedback and used Codex to make the fixes and reproduce the flow.</li>
           <li><strong>Cost, time, and remaining evidence.</strong> The checks used synthetic files and a mocked model provider. Builder hours, weekly spend, pod feedback, and at least one more outside tester are pending for the three-to-five-person Track B evaluation.</li>
         </ul>
